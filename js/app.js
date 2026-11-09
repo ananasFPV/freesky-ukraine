@@ -25,6 +25,8 @@
   }
   var form = document.getElementById('signup');
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var heroTrack = document.querySelector('.hero__track');
+  if (calm && heroTrack && heroTrack.pauseAnimations) heroTrack.pauseAnimations();
 
   var current = null;
   var busy = false;
