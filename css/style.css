@@ -283,23 +283,24 @@ p { margin: 0 0 1em; }
 }
 
 .track-line { fill: none; stroke: var(--line); stroke-width: 22; stroke-linejoin: round; }
-.trail { fill: none; stroke-width: 3; stroke-linecap: round; stroke-dasharray: 90 910; }
+.trail { fill: none; stroke-width: 3; stroke-linecap: round; }
 .trail--a { stroke: var(--led); }
 .trail--b { stroke: var(--led-2); }
 .trail--c { stroke: var(--go); }
 
-/* мікродрони на трасі */
-.wh-frame { fill: rgba(105, 207, 255, .45); stroke: #69cfff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
-.wh-duct { fill: rgba(105, 207, 255, .1); stroke: #69cfff; stroke-width: 2.2; }
-.wh-prop ellipse { fill: rgba(235, 244, 255, .5); }
-.wh-hub { fill: #2a8fb8; }
-.wh-board { fill: #12151c; stroke: #2a2f3a; stroke-width: .6; }
-.wh-canopy { fill: rgba(240, 246, 255, .82); }
-.wh-cam { fill: #0b0d12; stroke: #c9d2de; stroke-width: .8; }
-.wh-ant { stroke: #12151c; stroke-width: 1.8; stroke-linecap: round; }
-.drone--a { filter: drop-shadow(0 0 5px rgba(47, 217, 255, .8)); }
-.drone--b { filter: drop-shadow(0 0 5px rgba(255, 59, 141, .8)); }
-.drone--c { filter: drop-shadow(0 0 5px rgba(195, 255, 58, .7)); }
+/* мікродрони на трасі: колір кожного береться з color */
+.drone { opacity: .78; }
+.drone--a { color: #5cc8f0; }
+.drone--b { color: #f06a9e; }
+.drone--c { color: #b5e84a; }
+.wh-frame { fill: currentColor; fill-opacity: .35; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.wh-duct { fill: currentColor; fill-opacity: .08; stroke: currentColor; stroke-width: 2; }
+.wh-prop ellipse { fill: rgba(225, 235, 248, .35); }
+.wh-hub { fill: currentColor; }
+.wh-board { fill: #151922; }
+.wh-canopy { fill: rgba(215, 225, 240, .35); }
+.wh-cam { fill: #1c212c; }
+.wh-ant { stroke: #151922; stroke-width: 1.6; stroke-linecap: round; }
 
 .gates rect { fill: none; stroke: var(--led); stroke-width: 3; animation: gate 3s ease-in-out infinite; }
 .gates rect:nth-child(2) { animation-delay: .6s; }
