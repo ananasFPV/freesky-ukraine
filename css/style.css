@@ -638,3 +638,7 @@ a.contact:hover { border-color: var(--led); }
   .contact small { font-size: 10px; }
   .contact[href^="mailto"] { grid-column: span 2; }
 }
+
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 8px; }
+.btn-row .btn { margin: 0; }
+@media (max-width: 719px) { .btn-row .btn { flex: 1 1 100%; } }
