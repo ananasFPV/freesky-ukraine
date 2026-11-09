@@ -114,7 +114,7 @@ window.FS_I18N = {
     'fpv': 'From the simulator to flying real micro drones through a gate track.',
     'fpv.m': 'Kyiv: Tue &amp; Thu · Vinnytsia: Mon',
     'p3d.t': '3D printing',
-    'p3d': 'Designing and printing drone frames and parts on Bambu Lab printers.',
+    'p3d': 'Designing and printing drone frames on Bambu Lab printers.',
     'p3d.m': 'Days, age and price <span class="tbd">TBC</span>',
     'lec.t': 'Tech talks',
     'lec': 'How a drone is built and where drones are used. Held on class days.',
@@ -230,6 +230,8 @@ window.FS_I18N = {
     'fmt1': 'Core equipment for the classroom.',
     'fmt2': 'Gear or prizes for competitions.',
     'fmt3': 'Testing new equipment.',
+    'fmt4.t': 'Joint posts',
+    'fmt4': 'Joint posts and videos on social media: we tell our audience about you.',
     'partners.cta': 'Talk to us about partnership',
 
     'k.contacts': '09 / Contacts',
