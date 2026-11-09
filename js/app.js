@@ -194,7 +194,7 @@
       m[3] + ': ' + form.elements.age.value + '\n' +
       m[4] + ': ' + ui('city')[form.elements.city.value] + '\n' +
       m[5] + ': ' + ui('yesno')[form.elements.mil.value];
-    return 'https://wa.me/380672392503?text=' + encodeURIComponent(text);
+    return 'https://wa.me/380957592188?text=' + encodeURIComponent(text);
   }
 
   function say(text, cls) {
