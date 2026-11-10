@@ -35,6 +35,12 @@ window.FS_I18N = {
     'cta.long': 'Book a free trial lesson',
     'cta.sticky': 'Book a free trial',
     'menu.open': 'Menu',
+    'tick.w1': 'Learn',
+    'tick.w2': 'Explore',
+    'tick.w3': 'Win',
+    'tick.w4': 'Fly',
+    'tick.w5': 'Build',
+    'tick.w6': 'Print in 3D',
     'slogan': 'More Than a Drone School',
 
     'nav.home': 'Home',
