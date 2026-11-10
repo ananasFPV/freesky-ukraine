@@ -653,8 +653,7 @@ a.contact:hover { border-color: var(--led); }
   -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
           mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
 }
-.ticker__track { display: flex; width: max-content; animation: ticker 26s linear infinite; }
-.ticker:hover .ticker__track { animation-play-state: paused; }
+.ticker__track { display: flex; width: max-content; will-change: transform; }
 .ticker__group { display: flex; align-items: center; flex-shrink: 0; }
 .ticker span {
   font: 600 clamp(1.4rem, 4.2vw, 2.4rem)/1 var(--head); text-transform: uppercase;
@@ -667,5 +666,3 @@ a.contact:hover { border-color: var(--led); }
   flex-shrink: 0; width: 14px; height: 14px; border: 2px solid var(--led-2); border-radius: 3px;
   transform: rotate(45deg); box-shadow: 0 0 10px rgba(255, 59, 141, .6);
 }
-@keyframes ticker { to { transform: translateX(-50%); } }
-@media (prefers-reduced-motion: reduce) { .ticker__track { animation: none; } }

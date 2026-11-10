@@ -263,6 +263,33 @@
     clips.forEach(function (v) { clipWatch.observe(v); });
   }
 
+  // бігуча стрічка: рух рахуємо самі в пікселях, щоб на стику не було ривка
+  // (ширина міряється заново після завантаження шрифтів і при зміні розміру екрана)
+  var tickerTrack = document.querySelector('.ticker__track');
+  if (tickerTrack && !calm) {
+    var tGroup = tickerTrack.firstElementChild, tW = 0, tX = 0, tLast = 0, tOn = false, tRaf = 0;
+    var measure = function () { tW = tGroup.getBoundingClientRect().width; };
+    var step = function (now) {
+      if (!tOn) { tRaf = 0; return; }
+      var dt = tLast ? Math.min(now - tLast, 64) : 0;
+      tLast = now;
+      tX -= dt * 0.06; // ~60 px за секунду
+      if (tW && tX <= -tW) tX += tW;
+      tickerTrack.style.transform = 'translate3d(' + tX.toFixed(2) + 'px,0,0)';
+      tRaf = requestAnimationFrame(step);
+    };
+    var tickerRun = function (on) {
+      tOn = on;
+      if (on && !tRaf) { tLast = 0; tRaf = requestAnimationFrame(step); }
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { tickerRun(en[0].isIntersecting); }).observe(tickerTrack.parentNode);
+    } else tickerRun(true);
+  }
+
   document.getElementById('year').textContent = new Date().getFullYear();
 
   var saved = null;
