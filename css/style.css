@@ -636,7 +636,7 @@ a.contact:hover { border-color: var(--led); }
   .contacts { grid-template-columns: 1fr 1fr; gap: 8px; }
   .contact { padding: 12px 14px; font-size: 14px; }
   .contact small { font-size: 10px; }
-  .contact[href^="mailto"] { grid-column: span 2; }
+  .contact--main { grid-column: span 2; }
 }
 
 .btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 16px 0 8px; }

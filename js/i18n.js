@@ -235,7 +235,9 @@ window.FS_I18N = {
 
     'k.contacts': '09 / Contacts',
     'contacts.title': 'Sign-up and questions',
+    'c.wa': 'WhatsApp · class sign-up or other questions',
     'c.tg': 'Telegram · partnerships',
+    'c.em': 'Email · partnerships',
     'c.ch': 'Telegram channel',
     'place.kyiv': 'Tuesday and Thursday, groups at 16:00, 17:00, 18:00 and 19:00.',
     'place.vin': 'A new hall with a track and gates. Monday, 18:00.',
