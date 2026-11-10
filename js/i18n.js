@@ -181,6 +181,8 @@ window.FS_I18N = {
     'serhii.role': 'Director and instructor',
     'serhii.p': 'Professional musician and teacher with over 15 years of teaching experience. He built our drone curriculum for kids on a music-teaching method.',
     'ivan': 'Ivan',
+    'anna': 'Anna',
+    'pr': 'PR manager',
     'illia': 'Illia',
     'instr': 'Instructor',
     'instr.vin': 'Instructor in Vinnytsia',

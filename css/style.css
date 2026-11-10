@@ -621,6 +621,7 @@ a.contact:hover { border-color: var(--led); }
   .member .frame::before, .member .frame::after { display: none; }
   .member .frame__slot { padding: 6px; font-size: 0; }
   .member .frame__slot::before { font-size: 9px; }
+  .member .frame__slot:has(img)::before { display: none; }
   .member .frame__slot > span { display: none; }
   .member h3 { margin: 0; align-self: end; }
   .member p { margin: 0; }
