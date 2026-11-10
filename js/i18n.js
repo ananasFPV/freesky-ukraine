@@ -161,7 +161,7 @@ window.FS_I18N = {
     'no': 'No',
     'f.mil.hint': 'Children of service members study with us for free.',
     'f.send': 'Send request',
-    'f.alt': 'Or message us on Telegram:',
+    'f.alt': 'Or message us on WhatsApp:',
 
     'k.races': '05 / Competitions',
     'races.lead': 'Monthly in-house races and kids\' drone racing tournaments.',
@@ -235,7 +235,7 @@ window.FS_I18N = {
 
     'k.contacts': '09 / Contacts',
     'contacts.title': 'Sign-up and questions',
-    'c.tg': 'Telegram · sign-up',
+    'c.tg': 'Telegram · partnerships',
     'c.ch': 'Telegram channel',
     'place.kyiv': 'Tuesday and Thursday, groups at 16:00, 17:00, 18:00 and 19:00.',
     'place.vin': 'A new hall with a track and gates. Monday, 18:00.',
