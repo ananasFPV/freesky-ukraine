@@ -143,7 +143,7 @@ window.FS_I18N = {
     'groups50': '50-minute groups',
     'vin': 'Vinnytsia · Free Sky Win',
     'vin.days': 'Monday',
-    'volodia': 'Volodia',
+    'volodia': 'Volodymyr',
     'pr1.l': 'Monthly pass · Kyiv',
     'pr1': '4000 UAH',
     'pr1.u': '4 lessons a month',
