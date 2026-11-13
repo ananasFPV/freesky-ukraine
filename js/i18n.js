@@ -195,6 +195,8 @@ window.FS_I18N = {
     'exp.ivan': 'Experience: 5 years of flying',
     'exp.illia': 'Experience: 2 years of flying',
     'instr.3d': '3D printing instructor',
+    'serhii.3d': 'Serhii',
+    'volodymyr': 'Volodymyr',
     'eng': 'Engineer',
     'eng.p': 'Built the timing system for our races',
     'tbd.name': '<span class="tbd">name TBC</span>',
