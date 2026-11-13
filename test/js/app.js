@@ -241,8 +241,9 @@
       .then(function (r) { return r.json(); })
       .then(function (res) {
         if (!res.ok) throw new Error(res.error || 'fail');
-        say(ui('formSent'), 'is-ok');
+        say('');
         form.reset();
+        celebrate(form, ui('doneTrial'));
       })
       .catch(function () {
         msgEl.className = 'signup__msg is-err';
@@ -253,6 +254,55 @@
 
   form.addEventListener('input', function (e) { e.target.classList.remove('bad'); });
 
+
+  // --- анімація успішної заявки: форма згортається, малюється зелена галочка ---
+
+  function celebrate(f, text) {
+    var startH = f.offsetHeight;
+    var done = document.createElement('div');
+    done.className = 'done';
+    done.setAttribute('role', 'status');
+    done.innerHTML =
+      '<svg class="done__check" viewBox="0 0 52 52" aria-hidden="true">' +
+        '<circle class="done__ring" cx="26" cy="26" r="24"/>' +
+        '<path class="done__tick" d="M15 27 l7 7 l15 -16"/>' +
+      '</svg>' +
+      '<h2></h2><p></p>' +
+      '<button type="button" class="btn btn--line done__again"></button>';
+    done.querySelector('h2').textContent = ui('doneTitle');
+    done.querySelector('p').textContent = text;
+    done.querySelector('button').textContent = ui('doneAgain');
+
+    done.querySelector('button').addEventListener('click', function () {
+      f.classList.remove('is-done', 'is-folding');
+      f.style.height = '';
+      done.remove();
+      var first = f.querySelector('input:not(.hp)');
+      if (first) first.focus();
+    });
+
+    var finish = function () {
+      f.classList.add('is-done');
+      f.classList.remove('is-folding');
+      f.appendChild(done);
+      if (calm) { f.style.height = ''; return; }
+      f.style.height = 'auto';
+      var endH = f.offsetHeight;
+      f.style.height = startH + 'px';
+      void f.offsetHeight;
+      f.style.height = endH + 'px';
+      setTimeout(function () { f.style.height = ''; }, 650);
+      var top = f.getBoundingClientRect().top;
+      if (top < 70 || top > window.innerHeight * 0.6) {
+        window.scrollTo({ top: window.scrollY + top - 90, behavior: 'smooth' });
+      }
+    };
+
+    if (calm) { finish(); return; }
+    f.style.height = startH + 'px';
+    f.classList.add('is-folding');
+    setTimeout(finish, 420);
+  }
 
   // --- заявка на оренду траси ---
   // Іде тим самим шляхом, що й запис на пробне (Apps Script → таблиця + Telegram),
@@ -347,8 +397,9 @@
         .then(function (r) { return r.json(); })
         .then(function (res) {
           if (!res.ok) throw new Error(res.error || 'fail');
-          rSay(ui('formSent'), 'is-ok');
+          rSay('');
           rentForm.reset();
+          celebrate(rentForm, ui('doneRent'));
         })
         .catch(function () {
           rMsg.className = 'signup__msg is-err';

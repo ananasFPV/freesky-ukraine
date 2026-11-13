@@ -741,3 +741,34 @@ a.contact:hover { border-color: var(--led); }
 @media (min-width: 520px) { .signup__row--2 { grid-template-columns: 1fr 1fr; } }
 #rent { scroll-margin-top: 80px; }
 [data-view="rent"] .laps { margin-top: 28px; }
+
+/* --- заявку надіслано: форма згортається, малюється галочка --- */
+
+.signup { transition: opacity .6s, transform .7s var(--ease), height .55s var(--ease), border-color .5s, box-shadow .5s; }
+.signup.is-folding { overflow: hidden; }
+.signup.is-folding > * { animation: fold-out .42s var(--ease) forwards; transform-origin: 50% 0; }
+.signup.is-done > :not(.done) { display: none; }
+.signup.is-done { border-color: var(--go); box-shadow: 0 0 0 1px rgba(195, 255, 58, .25), 0 0 48px rgba(195, 255, 58, .12); overflow: hidden; }
+@keyframes fold-out {
+  to { opacity: 0; transform: translateY(-14px) scaleY(.7); filter: blur(3px); }
+}
+
+.done { text-align: center; padding: 18px 0 6px; }
+.done h2 { margin: 0 0 .4em; animation: done-up .5s .55s var(--ease) both; }
+.done p { color: var(--dim); max-width: 420px; margin: 0 auto 6px; animation: done-up .5s .65s var(--ease) both; }
+.done__again { animation: done-up .5s .8s var(--ease) both; }
+.done__check {
+  display: block; width: 88px; height: 88px; margin: 0 auto 20px; overflow: visible;
+  filter: drop-shadow(0 0 10px rgba(195, 255, 58, .55));
+  animation: done-pop .7s var(--ease) both;
+}
+.done__ring, .done__tick { fill: none; stroke: var(--go); stroke-linecap: round; stroke-linejoin: round; }
+.done__ring { stroke-width: 2.5; stroke-dasharray: 151; stroke-dashoffset: 151; animation: draw .6s .05s ease-out forwards; transform: rotate(-90deg); transform-origin: 26px 26px; }
+.done__tick { stroke-width: 4; stroke-dasharray: 34; stroke-dashoffset: 34; animation: draw .35s .55s ease-out forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+@keyframes done-pop { 0% { transform: scale(.5); opacity: 0; } 55% { transform: scale(1.12); opacity: 1; } 100% { transform: scale(1); } }
+@keyframes done-up { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .done__check, .done h2, .done p, .done__again { animation: none; }
+  .done__ring, .done__tick { animation: none; stroke-dashoffset: 0; }
+}
