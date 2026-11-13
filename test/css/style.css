@@ -684,14 +684,16 @@ a.contact:hover { border-color: var(--led); }
 .footer__test { width: 100%; color: #ffb547; }
 .footer__test a { color: #ffb547; }
 
+/* «Оренда траси» у шапці — такий самий жовтий контур, як «Пробне заняття» */
 .topbar__rent {
   display: none;
-  font: 500 14px var(--head); color: var(--text); text-decoration: none;
-  padding: 8px 14px; border: 1px solid var(--line); border-radius: 99px;
-  background: rgba(13, 17, 27, .7);
+  font: 500 14px var(--head); color: var(--go); text-decoration: none;
+  padding: 8px 14px; border: 1px solid currentColor; border-radius: 99px;
 }
-.topbar__rent:hover { border-color: var(--led); color: var(--led); }
-@media (min-width: 900px) { .topbar__rent { display: inline-block; } }
+.topbar__rent:hover { background: var(--go); color: #10140a; }
+.topbar__rent, .topbar__cta { white-space: nowrap; }
+@media (min-width: 880px) { .topbar__rent { display: inline-block; } }
+.rent-promo .btn--line { color: var(--go); border-color: var(--go); background: transparent; }
 
 .badge-new, .hero__new b {
   font: 600 10px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; font-style: normal;

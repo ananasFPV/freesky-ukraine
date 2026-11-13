@@ -290,7 +290,7 @@
       return {
         name: rf.name.value.trim(), phone: rf.phone.value.trim(),
         date: niceDate(rf.date.value), time: rf.time.value, hours: radio('hours'),
-        pilots: rf.pilots.value, city: d.city[radio('city')], gear: d.gear[radio('gear')],
+        pilots: rf.pilots.value, city: d.city.kyiv, gear: d.gear[radio('gear')], // оренда лише в Києві
         note: rf.note.value.trim()
       };
     };
@@ -312,6 +312,14 @@
         if (bad && ok) { f.focus(); ok = false; }
       });
       if (!ok) return;
+
+      // оренда лише у вихідні
+      var day = new Date(rf.date.value + 'T12:00:00').getDay();
+      if (day !== 0 && day !== 6) {
+        rf.date.classList.add('bad'); rf.date.focus();
+        rSay(ui('weekendOnly'), 'is-err');
+        return;
+      }
 
       if (!FORM_ENDPOINT) {
         window.open(rentWa(), '_blank', 'noopener');
@@ -350,6 +358,11 @@
     });
 
     rentForm.addEventListener('input', function (e) { e.target.classList.remove('bad'); });
+    rf.date.addEventListener('change', function () {
+      var day = new Date(rf.date.value + 'T12:00:00').getDay();
+      if (rf.date.value && day !== 0 && day !== 6) { rf.date.classList.add('bad'); rSay(ui('weekendOnly'), 'is-err'); }
+      else if (rMsg.classList.contains('is-err')) rSay('');
+    });
   }
 
   // відео без звуку: грають лише коли їх видно на екрані

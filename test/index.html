@@ -42,7 +42,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=test-202611131900">
+  <link rel="stylesheet" href="css/style.css?v=test-202611132100">
 </head>
 <body>
 <a class="skip" href="#app" data-i18n="skip">Перейти до змісту</a>
@@ -228,7 +228,7 @@
         <div>
           <span class="card__num">05 · <span data-i18n="new">нове</span></span>
           <h2 data-i18n="promo.t">Траса в оренду — погодинно</h2>
-          <p data-i18n="promo.p">Не лише для учнів. Приходьте зі своїм дроном, з друзями чи командою: LED-ворота, кільця й тунель — ваші на годину або більше.</p>
+          <p data-i18n="promo.p">Не лише для учнів. У Києві, по суботах і неділях: приходьте зі своїм дроном, з друзями чи командою: LED-ворота, кільця й тунель — ваші на годину або більше.</p>
           <span class="btn btn--line" data-i18n="cta.rent">Забронювати трасу</span>
         </div>
       </a>
@@ -416,7 +416,7 @@
       <header class="page-head">
         <p class="kicker" data-i18n="k.rent">05 / Оренда траси</p>
         <h1 data-i18n="rent.title">Оренда траси погодинно</h1>
-        <p class="lead" data-i18n="rent.lead">Наш зал із трасою можна забронювати на годину або більше: потренуватися зі своїм дроном, влаштувати заїзди з друзями чи підготуватися до змагань.</p>
+        <p class="lead" data-i18n="rent.lead">Наш зал із трасою в Києві можна забронювати у суботу або неділю, на годину або більше: потренуватися зі своїм дроном, влаштувати заїзди з друзями чи підготуватися до змагань.</p>
         <button class="btn btn--go" type="button" data-scroll="rent" data-i18n="cta.rent">Забронювати трасу</button>
       </header>
 
@@ -449,15 +449,15 @@
           <b data-i18n="rent.p1"><span class="tbd">ціну уточнити</span></b><span data-i18n="rent.p1.u">від 1 години</span>
         </div>
         <div class="price">
-          <span class="price__label" data-i18n="rent.p2.l">Пілотів одночасно</span>
-          <b data-i18n="rent.p2"><span class="tbd">уточнити</span></b><span data-i18n="rent.p2.u">скільки вас буде — вкажіть у заявці</span>
+          <span class="price__label" data-i18n="rent.p2.l">Коли · Київ</span>
+          <b data-i18n="rent.p2">Сб і Нд</b><span data-i18n="rent.p2.u">лише вихідні, лише Київ</span>
         </div>
         <div class="price">
           <span class="price__label" data-i18n="rent.p3.l">Техніка</span>
           <b data-i18n="rent.p3">своя</b><span data-i18n="rent.p3.u">техніка школи — <span class="tbd">уточнити</span></span>
         </div>
       </div>
-      <p class="note rv" data-i18n="rent.when">Трасу можна забронювати в години, вільні від дитячих занять. Точний слот і ціну підтвердить менеджер. <span class="tbd">уточнити години роботи</span></p>
+      <p class="note rv" data-i18n="rent.when">Оренда траси — лише в Києві, у суботу та неділю. Точний час і ціну підтвердить менеджер. <span class="tbd">уточнити години</span> <span class="tbd">скільки пілотів одночасно</span></p>
 
       <ol class="laps rv">
         <li><span data-i18n="lap1">Коло 1</span><h3 data-i18n="rent.l1.t">Заявка</h3><p data-i18n="rent.l1">Оберіть дату, час і скільки буде пілотів.</p></li>
@@ -467,11 +467,11 @@
 
       <form class="signup rv" id="rent" novalidate>
         <h2 data-i18n="rf.t">Заявка на оренду траси</h2>
-        <p data-i18n="rf.p">Залиште контакти й побажання щодо часу. Менеджер напише, щоб підтвердити бронювання.</p>
+        <p data-i18n="rf.p">Залиште контакти й побажання щодо часу. Оренда — лише в Києві, у суботу або неділю. Менеджер напише, щоб підтвердити бронювання.</p>
         <label><span data-i18n="rf.name">Ім'я</span><input name="name" autocomplete="name" required></label>
         <label><span data-i18n="f.phone">Телефон</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required></label>
         <div class="signup__row signup__row--2">
-          <label><span data-i18n="rf.date">Бажана дата</span><input name="date" type="date" required></label>
+          <label><span data-i18n="rf.date">Дата (субота або неділя)</span><input name="date" type="date" required></label>
           <label><span data-i18n="rf.time">Час початку</span><input name="time" type="time" step="1800" value="18:00"></label>
         </div>
         <fieldset>
@@ -482,11 +482,6 @@
         </fieldset>
         <div class="signup__row">
           <label><span data-i18n="rf.pilots">Пілотів</span><input name="pilots" type="number" min="1" max="30" inputmode="numeric" value="1" required></label>
-          <fieldset>
-            <legend data-i18n="f.city">Місто</legend>
-            <label class="pill"><input type="radio" name="city" value="kyiv" checked><span data-i18n="city.kyiv">Київ</span></label>
-            <label class="pill"><input type="radio" name="city" value="vin"><span data-i18n="city.vin">Вінниця</span></label>
-          </fieldset>
         </div>
         <fieldset>
           <legend data-i18n="rf.gear">Техніка</legend>
@@ -631,7 +626,7 @@
         <details class="rv"><summary data-i18n="q7">Дитина просто грається в симулятор?</summary><p data-i18n="a7">Ні, симулятор — це тренування, як гами для музиканта. Інструктор фіксує результати й поступово ускладнює вправи.</p></details>
         <details class="rv"><summary data-i18n="q8">Скільки часу, щоб навчитися?</summary><p data-i18n="a8">Злетіти можна на першому занятті, а впевнено керувати — результат кількох місяців регулярних тренувань.</p></details>
         <details class="rv"><summary data-i18n="q9">А якщо дитині не сподобається?</summary><p data-i18n="a9">Для цього і є безкоштовне пробне: дитина спробує, а ви подивитеся, як ми працюємо.</p></details>
-        <details class="rv"><summary data-i18n="q11">Чи можна орендувати трасу?</summary><p data-i18n="a11">Так, зал із трасою можна забронювати погодинно — для тренування, заїздів з друзями чи події. Деталі та заявка — у розділі <a href="#/rent">«Оренда траси»</a>.</p></details>
+        <details class="rv"><summary data-i18n="q11">Чи можна орендувати трасу?</summary><p data-i18n="a11">Так, у Києві зал із трасою можна забронювати погодинно в суботу або неділю — для тренування, заїздів з друзями чи події. Деталі та заявка — у розділі <a href="#/rent">«Оренда траси»</a>.</p></details>
         <details class="rv"><summary data-i18n="q10">Групові чи індивідуальні заняття?</summary><p data-i18n="a10">Групові, але в кожної дитини свій план і темп.</p></details>
       </div>
 
@@ -780,7 +775,7 @@
   <p><a href="#/rent" data-i18n="nav.rent">Оренда траси</a> · <a href="#/sponsors" data-i18n="nav.sponsors">Наші спонсори та партнери</a> · <a href="#/partners" data-i18n="nav.partners">Партнерам</a> · <a href="#/contacts" data-i18n="nav.contacts">Контакти</a></p>
 </footer>
 
-<script src="js/i18n.js?v=test-202611131900"></script>
-<script src="js/app.js?v=test-202611131900"></script>
+<script src="js/i18n.js?v=test-202611132100"></script>
+<script src="js/app.js?v=test-202611132100"></script>
 </body>
 </html>
