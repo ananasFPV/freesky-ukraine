@@ -255,6 +255,43 @@
   form.addEventListener('input', function (e) { e.target.classList.remove('bad'); });
 
 
+  // --- білий неон: світлий текст спалахує рядок за рядком, коли доходить до нього прокручування ---
+
+  (function () {
+    var targets = document.querySelectorAll(
+      'main h1, main h2, main h3, main .lead, main .hero__sub, main .quote p'
+    );
+    if (!targets.length) return;
+    var light = function (el) {
+      // довші блоки світяться трохи довше, щоб рядки загорялися по черзі
+      var lines = Math.max(1, Math.round(el.offsetHeight / (parseFloat(getComputedStyle(el).lineHeight) || 24)));
+      el.style.setProperty('--sweep', Math.min(0.55 + lines * 0.35, 2.2).toFixed(2) + 's');
+      el.classList.add('lit');
+      var finished = false;
+      var finish = function () {
+        if (finished) return;
+        finished = true;
+        el.classList.remove('lit');
+        el.classList.add('lit-done');
+      };
+      el.addEventListener('animationend', function (e) { if (e.animationName === 'neon-sweep') finish(); });
+      setTimeout(finish, 2600); // запасний варіант для старих браузерів
+    };
+    if (calm || !('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('neon', 'lit-done'); });
+      return;
+    }
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        seen.unobserve(en.target);
+        // невелика пауза, щоб збігтися з появою блоку
+        setTimeout(function () { light(en.target); }, 180);
+      });
+    }, { rootMargin: '0px 0px -18% 0px', threshold: 0.2 });
+    targets.forEach(function (el) { el.classList.add('neon'); seen.observe(el); });
+  })();
+
   // --- анімація успішної заявки: форма згортається, малюється зелена галочка ---
 
   function celebrate(f, text) {
