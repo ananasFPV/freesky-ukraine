@@ -8,7 +8,6 @@
   var views = document.querySelectorAll('.view');
   var menu = document.getElementById('menu');
   var menuBtn = document.querySelector('.menu-btn');
-  var wipe = document.querySelector('.wipe');
   var stickyCta = document.querySelector('.sticky-cta');
   // нижня кнопка ховається, коли на екрані вже є своя кнопка запису
   var onTrial = false, ctaInView = 0;
@@ -21,16 +20,13 @@
       });
       syncSticky();
     });
-    document.querySelectorAll('main .btn--go, .footer').forEach(function (el) { ctaWatch.observe(el); });
+    document.querySelectorAll('main .btn--go, main .btn--ink, .footer').forEach(function (el) { ctaWatch.observe(el); });
   }
   var form = document.getElementById('signup');
   var rentForm = document.getElementById('rent');
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var heroTrack = document.querySelector('.hero__track');
-  if (calm && heroTrack && heroTrack.pauseAnimations) heroTrack.pauseAnimations();
 
   var current = null;
-  var busy = false, pending = null;
 
   // --- мова ---
 
@@ -85,28 +81,22 @@
     // на сторінках із власною формою нижня кнопка «на пробне» не потрібна
     onTrial = name === 'trial' || name === 'rent';
     syncSticky();
+    var night = !!document.querySelector('.view[data-view="' + name + '"][data-night]');
+    document.body.classList.toggle('is-night', night);
     window.scrollTo(0, 0);
     current = name;
     watchReveal();
+    syncTop();
+    if (name === 'home') startDrone();
     if (name === 'races') runTimer();
   }
 
   function go(name) {
     if (name === current) return;
-    if (busy) { pending = name; return; }
-    if (calm || current === null) { show(name); return; }
-
-    busy = true;
-    wipe.classList.remove('run');
-    void wipe.offsetWidth; // перезапуск анімації
-    wipe.classList.add('run');
-
-    // підміняємо вкладку, поки екран закритий смугами
-    setTimeout(function () { show(name); }, 260);
-    setTimeout(function () {
-      wipe.classList.remove('run'); busy = false;
-      if (pending) { var p = pending; pending = null; go(p); }
-    }, 600);
+    if (calm || current === null || !document.startViewTransition) { show(name); return; }
+    document.documentElement.classList.add('vt');
+    var t = document.startViewTransition(function () { show(name); });
+    t.finished.then(function () { document.documentElement.classList.remove('vt'); }, function () { document.documentElement.classList.remove('vt'); });
   }
 
   window.addEventListener('hashchange', function () {
@@ -121,7 +111,7 @@
     requestAnimationFrame(function () { menu.classList.add('is-open'); });
     menuBtn.setAttribute('aria-expanded', 'true');
     menuBtn.querySelector('.menu-btn__label').textContent = ui('menuClose');
-    document.body.classList.add('no-scroll');
+    document.body.classList.add('no-scroll', 'menu-open');
   }
 
   function closeMenu() {
@@ -129,11 +119,12 @@
     menu.classList.remove('is-open');
     menuBtn.setAttribute('aria-expanded', 'false');
     menuBtn.querySelector('.menu-btn__label').textContent = ui('menuOpen');
-    document.body.classList.remove('no-scroll');
+    document.body.classList.remove('no-scroll', 'menu-open');
     setTimeout(function () {
       if (!menu.classList.contains('is-open')) menu.hidden = true;
-    }, 600);
+    }, 700);
   }
+  [].forEach.call(menu.querySelectorAll('.menu__list li'), function (li, i) { li.style.setProperty('--i', i); });
 
   menuBtn.addEventListener('click', function () {
     menu.classList.contains('is-open') ? closeMenu() : openMenu();
@@ -160,10 +151,9 @@
   }, { rootMargin: '0px 0px -8% 0px' }) : null;
 
   function watchReveal() {
-    var items = document.querySelectorAll('.view:not([hidden]) .rv:not(.on)');
-    items.forEach(function (el, i) {
+    var items = document.querySelectorAll('.view:not([hidden]) .rv:not(.on), .view:not([hidden]) .rise:not(.on)');
+    items.forEach(function (el) {
       if (!io) { el.classList.add('on'); return; }
-      el.style.transitionDelay = Math.min(i, 4) * 60 + 'ms';
       io.observe(el);
     });
   }
@@ -287,108 +277,6 @@
 
   form.addEventListener('input', function (e) { if (e.target.classList.contains('bad')) fieldError(e.target, ''); });
 
-
-  // --- білий неон: світлий текст спалахує по літерах, коли доходить до нього прокручування ---
-
-  (function () {
-    // лише заголовки сторінок і розділів; абзаци, підписи й форми лишаються спокійними
-    var targets = [].slice.call(document.querySelectorAll('main h1, main h2')).filter(function (el) {
-      return !el.closest('form');
-    });
-    if (!targets.length) return;
-    if (calm || !('IntersectionObserver' in window)) {
-      targets.forEach(function (el) { el.classList.add('neon', 'lit-done'); });
-      return;
-    }
-
-    // розбиваємо текст на літери, не чіпаючи вкладених тегів (<b>, <a> тощо)
-    function split(el) {
-      var chars = [];
-      var walk = function (node) {
-        [].slice.call(node.childNodes).forEach(function (n) {
-          if (n.nodeType === 3) {
-            var frag = document.createDocumentFragment();
-            n.nodeValue.split(/(\s+)/).forEach(function (part) {
-              if (!part) return;
-              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
-              var w = document.createElement('span');
-              w.className = 'nw';
-              Array.from(part).forEach(function (c) {
-                var s = document.createElement('span');
-                s.className = 'ch';
-                s.textContent = c;
-                w.appendChild(s);
-                chars.push(s);
-              });
-              frag.appendChild(w);
-            });
-            n.parentNode.replaceChild(frag, n);
-          } else if (n.nodeType === 1) walk(n);
-        });
-      };
-      walk(el);
-      return chars;
-    }
-
-    function light(el) {
-      var html = el.innerHTML;
-      var chars = split(el);
-      // літери йдуть одна за одною; довгий текст іде швидше, щоб не тягнулося
-      // увесь заголовок спалахує максимум за ~0,6 с
-      var step = Math.max(6, Math.min(40, 600 / Math.max(chars.length, 1)));
-      chars.forEach(function (c, i) { c.style.animationDelay = Math.round(i * step) + 'ms'; });
-      el.classList.add('lighting');
-      el.classList.remove('wait');
-      setTimeout(function () {
-        // повертаємо звичайну розмітку (щоб працював перемикач мови) і лишаємо світіння
-        if (el.querySelector('.ch')) el.innerHTML = html;
-        el.classList.add('lit-done');
-        el.classList.remove('lighting');
-      }, chars.length * step + 460);
-    }
-
-
-    var seen = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (!en.isIntersecting) return;
-        seen.unobserve(en.target);
-        var el = en.target;
-        setTimeout(function () {
-          light(el);
-        }, 60);
-      });
-    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.2 });
-    targets.forEach(function (el) { el.classList.add('neon', 'wait'); seen.observe(el); });
-  })();
-
-  // --- світіння за фото: вмикаємо пульс лише для фото, які зараз на екрані ---
-
-  (function () {
-    var frames = [].slice.call(document.querySelectorAll('.frame')).filter(function (f) {
-      return f.querySelector('.frame__slot > img, .frame__slot > video') && !f.querySelector('.frame__slot--logo');
-    });
-    frames.forEach(function (f) { f.classList.add('glow'); });
-    if (!('IntersectionObserver' in window)) { frames.forEach(function (f) { f.classList.add('vis'); }); return; }
-    var io2 = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) { en.target.classList.toggle('vis', en.isIntersecting); });
-    }, { rootMargin: '80px 0px' });
-    frames.forEach(function (f) { io2.observe(f); });
-  })();
-
-  // --- головний екран: дрони й траса ---
-  // На телефоні прибираємо SVG-розмиття (воно найважче для графіки), а коли екран
-  // не видно — ставимо анімацію на паузу, щоб не забирала ресурси у відео й прокрутки.
-  if (heroTrack) {
-    if (window.matchMedia('(max-width: 719px), (pointer: coarse)').matches) {
-      heroTrack.querySelectorAll('[filter]').forEach(function (n) { n.removeAttribute('filter'); });
-      heroTrack.classList.add('lite');
-    }
-    if (!calm && heroTrack.pauseAnimations && 'IntersectionObserver' in window) {
-      new IntersectionObserver(function (en) {
-        if (en[0].isIntersecting) heroTrack.unpauseAnimations(); else heroTrack.pauseAnimations();
-      }).observe(heroTrack);
-    }
-  }
 
   // --- анімація успішної заявки: форма згортається, малюється зелена галочка ---
 
@@ -550,7 +438,7 @@
   }
 
   // відео без звуку: грають лише коли їх видно на екрані
-  var clips = [].slice.call(document.querySelectorAll('.frame__slot video'));
+  var clips = [].slice.call(document.querySelectorAll('main video'));
   clips.forEach(function (v) { v.removeAttribute('autoplay'); v.muted = true; });
   if (!calm && 'IntersectionObserver' in window) {
     var clipWatch = new IntersectionObserver(function (entries) {
@@ -562,38 +450,44 @@
     clips.forEach(function (v) { clipWatch.observe(v); });
   }
 
-  // бігуча стрічка: рух рахуємо самі в пікселях, щоб на стику не було ривка
-  // (ширина міряється заново після завантаження шрифтів і при зміні розміру екрана)
-  var tickerTrack = document.querySelector('.ticker__track');
-  if (tickerTrack && !calm) {
-    var tGroup = tickerTrack.firstElementChild, tW = 0, tX = 0, tLast = 0, tOn = false, tRaf = 0;
-    var measure = function () { tW = tGroup.getBoundingClientRect().width; };
-    var step = function (now) {
-      if (!tOn) { tRaf = 0; return; }
-      var dt = tLast ? Math.min(now - tLast, 64) : 0;
-      tLast = now;
-      tX -= dt * 0.06; // ~60 px за секунду
-      if (tW && tX <= -tW) tX += tW;
-      tickerTrack.style.transform = 'translate3d(' + tX.toFixed(2) + 'px,0,0)';
-      tRaf = requestAnimationFrame(step);
-    };
-    var tickerRun = function (on) {
-      tOn = on;
-      if (on && !tRaf) { tLast = 0; tRaf = requestAnimationFrame(step); }
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
-    if ('IntersectionObserver' in window) {
-      new IntersectionObserver(function (en) { tickerRun(en[0].isIntersecting); }).observe(tickerTrack.parentNode);
-    } else tickerRun(true);
-  }
-
-  // верхня панель: суцільне тло, щойно сторінка зрушила, щоб текст не ліз під логотип
+  // верхня панель: суцільне тло після зрушення; світлий текст, коли під нею нічна секція
   var topbar = document.querySelector('.topbar'), tbTick = false;
-  var syncTop = function () { tbTick = false; topbar.classList.toggle('scrolled', window.scrollY > 8); };
+  var nights = [].slice.call(document.querySelectorAll('[data-night], .footer, .finale'));
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  function syncTop() {
+    tbTick = false;
+    topbar.classList.toggle('scrolled', window.scrollY > 8);
+    var dark = false, sunny = false;
+    for (var i = 0; i < nights.length; i++) {
+      var el = nights[i];
+      if (el.hidden || el.closest('[hidden]')) continue;
+      var r = el.getBoundingClientRect();
+      if (r.top <= 34 && r.bottom > 34) { if (el.classList.contains('finale')) sunny = true; else dark = true; break; }
+    }
+    document.body.classList.toggle('is-sun-top', sunny);
+    if (dark !== document.body.classList.contains('is-dark-top')) {
+      document.body.classList.toggle('is-dark-top', dark);
+      themeMeta.content = dark ? '#050a20' : '#b9dbff';
+    }
+  }
   window.addEventListener('scroll', function () { if (!tbTick) { tbTick = true; requestAnimationFrame(syncTop); } }, { passive: true });
-  syncTop();
+
+  // заголовки сторінок і розділів виїжджають з-під лінії
+  [].forEach.call(document.querySelectorAll('main h1, .wrap > h2, .split h2, .course h2, .track__copy h2, .finale h2, .rent-promo h2, .lead-person h2'), function (el) {
+    el.classList.add('rise');
+  });
+
+  // 3D-дрон вантажимо окремо, щоб не затримувати перший екран
+  var droneOn = false;
+  function startDrone() {
+    if (droneOn) return;
+    var stage = document.querySelector('.stage'), story = document.querySelector('.story');
+    if (!stage || !story) return;
+    droneOn = true;
+    import(new URL('js/drone.js?v=test-202611150300', document.baseURI).href).then(function (m) {
+      m.mount(stage, story, calm);
+    }).catch(function () { stage.hidden = true; });
+  }
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
