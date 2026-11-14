@@ -339,7 +339,7 @@
     var rentData = function (d) {
       return {
         name: rf.name.value.trim(), phone: rf.phone.value.trim(),
-        date: niceDate(rf.date.value), time: rf.time.value, hours: radio('hours'),
+        date: niceDate(rf.date.value), time: radio('slot'), hours: '1',
         pilots: rf.pilots.value, city: d.city.kyiv, gear: d.gear[radio('gear')], // оренда лише в Києві
         note: rf.note.value.trim()
       };
@@ -363,6 +363,12 @@
       });
       if (!ok) return;
 
+      if (!rf.agree.checked) {
+        rf.agree.focus();
+        rSay(ui('agreeFirst'), 'is-err');
+        return;
+      }
+
       // оренда лише у вихідні
       var day = new Date(rf.date.value + 'T12:00:00').getDay();
       if (day !== 0 && day !== 6) {
@@ -381,7 +387,8 @@
       var summary = d.date + ' ' + d.time + ', ' + d.hours + ' год, ' + d.pilots + ' пілот.';
       var body = new URLSearchParams({
         type: 'rental',
-        name: d.name, phone: d.phone, date: d.date, time: d.time, hours: d.hours,
+        // у скрипті поле часу коротке, тому шлемо початок години (12:00)
+        name: d.name, phone: d.phone, date: d.date, time: d.time.slice(0, 5), hours: d.hours,
         pilots: d.pilots, city: d.city, gear: d.gear, note: d.note,
         // для старої версії скрипта
         parent: ('ОРЕНДА ТРАСИ · ' + d.name + ' · ' + summary).slice(0, 80),

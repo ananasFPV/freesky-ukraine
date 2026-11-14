@@ -772,3 +772,23 @@ a.contact:hover { border-color: var(--led); }
   .done__check, .done h2, .done p, .done__again { animation: none; }
   .done__ring, .done__tick { animation: none; stroke-dashoffset: 0; }
 }
+
+/* --- оренда: розклад і умови --- */
+.board__slots--wide li { font-size: 15px; }
+.rent-hero + .prices { margin-top: 28px; }
+.rules { list-style: none; padding: 0; margin: 0 0 28px; counter-reset: r; display: grid; gap: 10px; }
+@media (min-width: 760px) { .rules { grid-template-columns: 1fr 1fr; } }
+.rules li {
+  counter-increment: r; position: relative;
+  padding: 16px 18px 16px 58px; border-radius: var(--r);
+  background: var(--bg-2); border: 1px solid var(--line); color: #c3cbd8;
+}
+.rules li::before {
+  content: counter(r); position: absolute; left: 18px; top: 14px;
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  font: 600 13px var(--mono); color: #10140a; background: #ffb547;
+}
+.rules b { color: var(--text); }
+.signup .agree { display: flex; gap: 10px; align-items: flex-start; font-weight: 400; color: #c3cbd8; cursor: pointer; }
+.signup .agree input[type="checkbox"] { display: inline-block; padding: 0; width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--go); flex-shrink: 0; }
+[data-view="rent"] .schedule + h2 { margin-top: 44px; }
