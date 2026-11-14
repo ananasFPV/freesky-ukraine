@@ -30,7 +30,7 @@
   if (calm && heroTrack && heroTrack.pauseAnimations) heroTrack.pauseAnimations();
 
   var current = null;
-  var busy = false;
+  var busy = false, pending = null;
 
   // --- мова ---
 
@@ -92,7 +92,8 @@
   }
 
   function go(name) {
-    if (name === current || busy) return;
+    if (name === current) return;
+    if (busy) { pending = name; return; }
     if (calm || current === null) { show(name); return; }
 
     busy = true;
@@ -101,8 +102,11 @@
     wipe.classList.add('run');
 
     // підміняємо вкладку, поки екран закритий смугами
-    setTimeout(function () { show(name); }, 380);
-    setTimeout(function () { wipe.classList.remove('run'); busy = false; }, 1000);
+    setTimeout(function () { show(name); }, 260);
+    setTimeout(function () {
+      wipe.classList.remove('run'); busy = false;
+      if (pending) { var p = pending; pending = null; go(p); }
+    }, 600);
   }
 
   window.addEventListener('hashchange', function () {
@@ -186,6 +190,42 @@
   // Заявка йде в Google-таблицю й Telegram через Apps Script.
   // Якщо скрипт не налаштований або не відповідає, пропонуємо WhatsApp.
 
+  // помилка біля поля: текстом, а не лише кольором рамки
+  function fieldError(f, text) {
+    var id = (f.form.id || 'f') + '-' + f.name + '-err';
+    var box = document.getElementById(id);
+    if (!text) {
+      f.classList.remove('bad'); f.removeAttribute('aria-invalid');
+      if (box) box.remove();
+      return;
+    }
+    f.classList.add('bad'); f.setAttribute('aria-invalid', 'true');
+    if (!box) {
+      box = document.createElement('span');
+      box.className = 'field-err'; box.id = id;
+      f.insertAdjacentElement('afterend', box);
+      f.setAttribute('aria-describedby', id);
+    }
+    box.textContent = text;
+  }
+  function checkField(f) {
+    var v = f.value.trim();
+    if (f.name === 'phone') return v.replace(/\D/g, '').length >= 9 ? '' : ui('errPhone');
+    if (!v) return ui(f.name === 'date' ? 'errDate' : 'errEmpty');
+    if (!f.checkValidity()) return ui(f.name === 'age' ? 'errAge' : f.name === 'pilots' ? 'errPilots' : 'errEmpty');
+    return '';
+  }
+  function validate(fields) {
+    var first = null;
+    fields.forEach(function (f) {
+      var err = checkField(f);
+      fieldError(f, err);
+      if (err && !first) first = f;
+    });
+    if (first) first.focus();
+    return !first;
+  }
+
   var msgEl = form.querySelector('.signup__msg');
   var sendBtn = form.querySelector('button[type="submit"]');
 
@@ -207,14 +247,7 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var ok = true;
-    ['parent', 'phone', 'age'].forEach(function (n) {
-      var f = form.elements[n];
-      var bad = !f.value.trim() || !f.checkValidity() || (n === 'phone' && f.value.replace(/\D/g, '').length < 9);
-      f.classList.toggle('bad', bad);
-      if (bad && ok) { f.focus(); ok = false; }
-    });
-    if (!ok) return;
+    if (!validate(['parent', 'phone', 'age'].map(function (n) { return form.elements[n]; }))) return;
 
     if (!FORM_ENDPOINT) {
       window.open(waLink(), '_blank', 'noopener');
@@ -252,15 +285,16 @@
       .then(function () { sendBtn.disabled = false; });
   });
 
-  form.addEventListener('input', function (e) { e.target.classList.remove('bad'); });
+  form.addEventListener('input', function (e) { if (e.target.classList.contains('bad')) fieldError(e.target, ''); });
 
 
   // --- білий неон: світлий текст спалахує по літерах, коли доходить до нього прокручування ---
 
   (function () {
-    var targets = document.querySelectorAll(
-      'main h1, main h2, main h3, main .lead, main .hero__sub, main .quote p'
-    );
+    // лише заголовки сторінок і розділів; абзаци, підписи й форми лишаються спокійними
+    var targets = [].slice.call(document.querySelectorAll('main h1, main h2')).filter(function (el) {
+      return !el.closest('form');
+    });
     if (!targets.length) return;
     if (calm || !('IntersectionObserver' in window)) {
       targets.forEach(function (el) { el.classList.add('neon', 'lit-done'); });
@@ -300,7 +334,8 @@
       var html = el.innerHTML;
       var chars = split(el);
       // літери йдуть одна за одною; довгий текст іде швидше, щоб не тягнулося
-      var step = Math.max(8, Math.min(55, 1500 / Math.max(chars.length, 1)));
+      // увесь заголовок спалахує максимум за ~0,6 с
+      var step = Math.max(6, Math.min(40, 600 / Math.max(chars.length, 1)));
       chars.forEach(function (c, i) { c.style.animationDelay = Math.round(i * step) + 'ms'; });
       el.classList.add('lighting');
       el.classList.remove('wait');
@@ -309,15 +344,9 @@
         if (el.querySelector('.ch')) el.innerHTML = html;
         el.classList.add('lit-done');
         el.classList.remove('lighting');
-      }, chars.length * step + 800);
+      }, chars.length * step + 460);
     }
 
-    // на вузьких екранах довгі абзаци не ділимо на літери: менше роботи для телефону
-    var narrow = window.matchMedia('(max-width: 719px)').matches;
-    function fade(el) {
-      el.classList.add('fade', 'lit-done');
-      el.classList.remove('wait');
-    }
 
     var seen = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -325,8 +354,8 @@
         seen.unobserve(en.target);
         var el = en.target;
         setTimeout(function () {
-          if (narrow && el.matches('.lead, .hero__sub')) fade(el); else light(el);
-        }, 150);
+          light(el);
+        }, 60);
       });
     }, { rootMargin: '0px 0px -15% 0px', threshold: 0.2 });
     targets.forEach(function (el) { el.classList.add('neon', 'wait'); seen.observe(el); });
@@ -460,14 +489,7 @@
 
     rentForm.addEventListener('submit', function (e) {
       e.preventDefault();
-      var ok = true;
-      ['name', 'phone', 'date', 'pilots'].forEach(function (n) {
-        var f = rf[n];
-        var bad = !f.value.trim() || !f.checkValidity() || (n === 'phone' && f.value.replace(/\D/g, '').length < 9);
-        f.classList.toggle('bad', bad);
-        if (bad && ok) { f.focus(); ok = false; }
-      });
-      if (!ok) return;
+      if (!validate(['name', 'phone', 'date', 'pilots'].map(function (n) { return rf[n]; }))) return;
 
       if (!rf.agree.checked) {
         rf.agree.focus();
@@ -478,8 +500,7 @@
       // оренда лише у вихідні
       var day = new Date(rf.date.value + 'T12:00:00').getDay();
       if (day !== 0 && day !== 6) {
-        rf.date.classList.add('bad'); rf.date.focus();
-        rSay(ui('weekendOnly'), 'is-err');
+        fieldError(rf.date, ui('weekendOnly')); rf.date.focus();
         return;
       }
 
@@ -521,11 +542,10 @@
         .then(function () { rBtn.disabled = false; });
     });
 
-    rentForm.addEventListener('input', function (e) { e.target.classList.remove('bad'); });
+    rentForm.addEventListener('input', function (e) { if (e.target.classList.contains('bad') && e.target !== rf.date) fieldError(e.target, ''); });
     rf.date.addEventListener('change', function () {
       var day = new Date(rf.date.value + 'T12:00:00').getDay();
-      if (rf.date.value && day !== 0 && day !== 6) { rf.date.classList.add('bad'); rSay(ui('weekendOnly'), 'is-err'); }
-      else if (rMsg.classList.contains('is-err')) rSay('');
+      fieldError(rf.date, rf.date.value && day !== 0 && day !== 6 ? ui('weekendOnly') : '');
     });
   }
 
@@ -568,6 +588,12 @@
       new IntersectionObserver(function (en) { tickerRun(en[0].isIntersecting); }).observe(tickerTrack.parentNode);
     } else tickerRun(true);
   }
+
+  // верхня панель: суцільне тло, щойно сторінка зрушила, щоб текст не ліз під логотип
+  var topbar = document.querySelector('.topbar'), tbTick = false;
+  var syncTop = function () { tbTick = false; topbar.classList.toggle('scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', function () { if (!tbTick) { tbTick = true; requestAnimationFrame(syncTop); } }, { passive: true });
+  syncTop();
 
   document.getElementById('year').textContent = new Date().getFullYear();
 

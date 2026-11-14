@@ -42,7 +42,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=test-202611142210">
+  <link rel="stylesheet" href="css/style.css?v=test-202611150100">
 </head>
 <body>
 <a class="skip" href="#app" data-i18n="skip">Перейти до змісту</a>
@@ -68,17 +68,17 @@
 <nav class="menu" id="menu" hidden>
   <div class="menu__track" aria-hidden="true"></div>
   <ol class="menu__list">
-    <li><a href="#/"><small>01</small><span data-i18n="nav.home">Головна</span></a></li>
-    <li><a href="#/about"><small>02</small><span data-i18n="nav.about">Про школу</span></a></li>
-    <li><a href="#/courses"><small>03</small><span data-i18n="nav.courses">Напрями</span></a></li>
-    <li><a href="#/trial"><small>04</small><span data-i18n="nav.trial">Пробне, розклад і ціни</span></a></li>
-    <li><a href="#/rent"><small>05</small><span data-i18n="nav.rent">Оренда траси</span><em class="badge-new" data-i18n="new">нове</em></a></li>
-    <li><a href="#/races"><small>06</small><span data-i18n="nav.races">Змагання</span></a></li>
-    <li><a href="#/team"><small>07</small><span data-i18n="nav.team">Команда</span></a></li>
-    <li><a href="#/faq"><small>08</small><span data-i18n="nav.faq">Питання батьків</span></a></li>
-    <li><a href="#/partners"><small>09</small><span data-i18n="nav.partners">Партнерам</span></a></li>
-    <li><a href="#/contacts"><small>10</small><span data-i18n="nav.contacts">Контакти</span></a></li>
-    <li><a href="#/sponsors"><small>11</small><span data-i18n="nav.sponsors">Наші спонсори та партнери</span></a></li>
+    <li><a href="#/"><span data-i18n="nav.home">Головна</span></a></li>
+    <li><a href="#/about"><span data-i18n="nav.about">Про школу</span></a></li>
+    <li><a href="#/courses"><span data-i18n="nav.courses">Напрями</span></a></li>
+    <li><a href="#/trial"><span data-i18n="nav.trial">Пробне, розклад і ціни</span></a></li>
+    <li><a href="#/rent"><span data-i18n="nav.rent">Оренда траси</span><em class="badge-new" data-i18n="new">нове</em></a></li>
+    <li><a href="#/races"><span data-i18n="nav.races">Змагання</span></a></li>
+    <li><a href="#/team"><span data-i18n="nav.team">Команда</span></a></li>
+    <li><a href="#/faq"><span data-i18n="nav.faq">Питання батьків</span></a></li>
+    <li><a href="#/partners"><span data-i18n="nav.partners">Партнерам</span></a></li>
+    <li><a href="#/contacts"><span data-i18n="nav.contacts">Контакти</span></a></li>
+    <li><a href="#/sponsors"><span data-i18n="nav.sponsors">Наші спонсори та партнери</span></a></li>
   </ol>
   <div class="menu__foot">
     <a href="https://wa.me/380672392503" target="_blank" rel="noopener">WhatsApp</a>
@@ -156,8 +156,8 @@
 
       <div class="hero__inner">
         <a class="hero__new" href="#/rent"><b data-i18n="new">нове</b><span data-i18n="hero.rent">Оренда траси погодинно</span></a>
-        <p class="kicker" data-i18n="slogan">Більше, ніж школа дронів</p>
         <h1 data-i18n="hero.title">Школа FPV-дронів і STEM для дітей <span class="nowrap">6–17 років</span></h1>
+        <p class="hero__slogan" data-i18n="slogan">Більше, ніж школа дронів</p>
         <p class="hero__sub" data-i18n="hero.sub">Від симулятора до справжніх польотів. У кожної дитини — свій план. Київ і Вінниця.</p>
         <a class="btn btn--go" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
 
@@ -170,7 +170,7 @@
       </div>
     </div>
 
-    <div class="ticker" role="marquee" aria-label="Вчись, досліджуй, перемагай">
+    <div class="ticker" aria-hidden="true">
       <div class="ticker__track">
         <div class="ticker__group">
           <span data-i18n="tick.w1">Вчись</span><i></i>
@@ -207,17 +207,14 @@
 
       <div class="cards cards--3">
         <a class="card rv" href="#/courses">
-          <span class="card__num">03</span>
           <h3 data-i18n="nav.courses">Напрями</h3>
           <p data-i18n="home.c1">FPV-пілотування, 3D-друк і технічні лекції.</p>
         </a>
         <a class="card rv" href="#/trial">
-          <span class="card__num">04</span>
           <h3 data-i18n="home.c2.t">Як проходить пробне</h3>
           <p data-i18n="home.c2">50 хвилин, безкоштовно, без досвіду. Техніку даємо ми.</p>
         </a>
         <a class="card rv" href="#/races">
-          <span class="card__num">06</span>
           <h3>Micro Drone Games</h3>
           <p data-i18n="home.c3">Щомісячні змагання на трасі з LED-воротами й табло часу.</p>
         </a>
@@ -226,7 +223,7 @@
       <a class="rent-promo rv" href="#/rent">
         <figure class="frame"><div class="frame__slot" data-label="TRACK"><video src="img/video/gates-glow.mp4" poster="img/video/gates-glow.webp" muted autoplay loop playsinline preload="metadata" aria-label="LED-ворота траси в залі"></video></div></figure>
         <div>
-          <span class="card__num">05 · <span data-i18n="new">нове</span></span>
+          <span class="badge-new" data-i18n="new">нове</span>
           <h2 data-i18n="promo.t">Траса в оренду — погодинно</h2>
           <p data-i18n="promo.p">Не лише для учнів. У Києві, по суботах і неділях, 1000 грн за годину: приходьте зі своїм дроном, з друзями чи командою: LED-ворота, кільця й тунель — ваші на годину або більше.</p>
           <span class="btn btn--line" data-i18n="cta.rent">Забронювати трасу</span>
@@ -237,6 +234,17 @@
         <p data-i18n="quote">Моє завдання — не обрати за дитину професію. Моє завдання — відчинити їй двері.</p>
         <cite data-i18n="quote.by">Сергій Ткачук, директор школи</cite>
       </blockquote>
+
+      <aside class="finale rv">
+        <div class="finale__text">
+          <h2 data-i18n="trial.title">Перше заняття — безкоштовно</h2>
+          <p data-i18n="home.c2">50 хвилин, безкоштовно, без досвіду. Техніку даємо ми.</p>
+        </div>
+        <div class="finale__act">
+          <a class="btn btn--go" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
+          <p class="signup__alt"><span data-i18n="f.alt">Або одразу в WhatsApp:</span> <a href="https://wa.me/380672392503" target="_blank" rel="noopener">+380 67 239 2503</a></p>
+        </div>
+      </aside>
     </div>
   </section>
 
@@ -244,7 +252,6 @@
   <section class="view" data-view="about" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.about">02 / Про школу</p>
         <h1 data-i18n="about.title">FPV-школа дронів і STEM-освітній хаб</h1>
         <p class="lead" data-i18n="about.lead">Free Sky Ukraine працює з 2022 року в Києві, а філіал Free Sky Win — у Вінниці.</p>
       </header>
@@ -303,7 +310,6 @@
   <section class="view" data-view="courses" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.courses">03 / Напрями</p>
         <h1 data-i18n="courses.title">Що вивчають у школі</h1>
       </header>
 
@@ -341,11 +347,12 @@
   <section class="view" data-view="trial" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.trial">04 / Пробне заняття</p>
         <h1 data-i18n="trial.title">Перше заняття — безкоштовно</h1>
         <p class="lead" data-i18n="trial.lead">Триває 50 хвилин. Досвід не потрібен, уся техніка наша.</p>
+        <button class="btn btn--go" type="button" data-scroll="signup" data-i18n="f.t">Запис на пробне</button>
       </header>
 
+      <h2 class="vh" data-i18n="home.c2.t">Як проходить пробне</h2>
       <ol class="laps rv">
         <li><span data-i18n="lap1">Коло 1</span><h3 data-i18n="l1.t">Знайомство з технікою</h3><p data-i18n="l1">Пульт, дрон, FPV-окуляри.</p></li>
         <li><span data-i18n="lap2">Коло 2</span><h3 data-i18n="l2.t">Симулятор</h3><p data-i18n="l2">Перші вправи, перші падіння (це нормально) і перше вдале коло.</p></li>
@@ -414,7 +421,6 @@
   <section class="view" data-view="rent" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.rent">05 / Оренда траси</p>
         <h1 data-i18n="rent.title">Оренда траси погодинно</h1>
         <p class="lead" data-i18n="rent.lead">Тренування на нашій трасі в Києві по суботах і неділях. Обирайте годину, бронюйте заздалегідь — і літайте.</p>
         <button class="btn btn--go" type="button" data-scroll="rent" data-i18n="cta.rent">Забронювати трасу</button>
@@ -513,7 +519,6 @@
   <section class="view" data-view="races" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.races">06 / Змагання</p>
         <h1>Micro Drone Games</h1>
         <p class="lead" data-i18n="races.lead">«Ігри мікродронів» — внутрішні змагання раз на місяць і дитячі турніри з дрон-рейсингу.</p>
       </header>
@@ -563,7 +568,6 @@
   <section class="view" data-view="team" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.team">07 / Команда</p>
         <h1 data-i18n="team.title">Наші інструктори</h1>
       </header>
 
@@ -616,7 +620,6 @@
   <section class="view" data-view="faq" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.faq">08 / Питання батьків</p>
         <h1 data-i18n="faq.title">Коротко про головне</h1>
       </header>
 
@@ -642,7 +645,6 @@
   <section class="view" data-view="partners" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.partners">09 / Партнерам і спонсорам</p>
         <h1 data-i18n="partners.title">Давайте розвивати юних інженерів і пілотів разом</h1>
         <p class="lead" data-i18n="partners.lead">Ми відкриті до співпраці з виробниками й магазинами техніки, які хочуть, щоб діти вчилися на хорошому обладнанні. Техніка по бартеру, знижки для учнів, призи для змагань — обговоримо формат, зручний для вас.</p>
       </header>
@@ -683,7 +685,6 @@
   <section class="view" data-view="contacts" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.contacts">10 / Контакти</p>
         <h1 data-i18n="contacts.title">Запис і питання</h1>
       </header>
 
@@ -725,7 +726,6 @@
   <section class="view" data-view="sponsors" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.sponsors">11 / Наші спонсори та партнери</p>
         <h1 data-i18n="sp.title">Дякуємо тим, хто літає разом з нами</h1>
         <p class="lead" data-i18n="sp.lead">Завдяки нашим партнерам більше дітей можуть безкоштовно вчитися технологіям, тренуватися на хорошій техніці й виступати на змаганнях.</p>
       </header>
@@ -779,7 +779,7 @@
   <p><a href="#/rent" data-i18n="nav.rent">Оренда траси</a> · <a href="#/sponsors" data-i18n="nav.sponsors">Наші спонсори та партнери</a> · <a href="#/partners" data-i18n="nav.partners">Партнерам</a> · <a href="#/contacts" data-i18n="nav.contacts">Контакти</a></p>
 </footer>
 
-<script src="js/i18n.js?v=test-202611142210"></script>
-<script src="js/app.js?v=test-202611142210"></script>
+<script src="js/i18n.js?v=test-202611150100"></script>
+<script src="js/app.js?v=test-202611150100"></script>
 </body>
 </html>

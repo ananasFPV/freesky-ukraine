@@ -46,7 +46,10 @@ p { margin: 0 0 1em; }
   display: flex; align-items: center; gap: 12px;
   height: 64px; padding: 0 var(--pad);
   background: linear-gradient(var(--bg) 30%, transparent);
+  border-bottom: 1px solid transparent;
+  transition: background-color .25s ease, border-color .25s ease;
 }
+.topbar.scrolled { background: var(--bg); border-bottom-color: var(--line); }
 .logo { display: flex; align-items: center; gap: 10px; color: var(--text); text-decoration: none; margin-right: auto; }
 .logo span { font: 700 14px/1.05 var(--head); text-transform: uppercase; white-space: nowrap; }
 .logo b { display: block; font-weight: 500; color: var(--dim); font-size: 11px; letter-spacing: .18em; }
@@ -162,20 +165,20 @@ p { margin: 0 0 1em; }
 .wipe i:nth-child(2) { top: 33vh; background: #0a0e17; }
 .wipe i:nth-child(2)::after { background: var(--led-2); box-shadow: 0 0 18px 2px var(--led-2); }
 .wipe i:nth-child(3) { top: 66vh; }
-.wipe.run i { animation: wipe .8s var(--ease) forwards; }
-.wipe.run i:nth-child(2) { animation-delay: .06s; }
-.wipe.run i:nth-child(3) { animation-delay: .12s; }
+.wipe.run i { animation: wipe .5s cubic-bezier(.6, 0, .3, 1) forwards; }
+.wipe.run i:nth-child(2) { animation-delay: .03s; }
+.wipe.run i:nth-child(3) { animation-delay: .06s; }
 
 @keyframes wipe {
   0%   { transform: translateX(-130%) skewX(-18deg); }
-  45%, 55% { transform: translateX(0) skewX(-18deg); }
+  42%, 58% { transform: translateX(0) skewX(-18deg); }
   100% { transform: translateX(130%) skewX(-18deg); }
 }
 
 .view { min-height: 100vh; padding-bottom: 40px; }
-.view.is-in { animation: view-in .6s var(--ease) both; }
+.view.is-in { animation: view-in .4s var(--ease) both; }
 @keyframes view-in {
-  from { opacity: 0; transform: translateY(18px); }
+  from { opacity: 0; transform: translateY(10px); }
   to   { opacity: 1; transform: none; }
 }
 
@@ -497,7 +500,7 @@ a.card:hover::after { transform: scaleX(1); }
 .member .meta { margin-bottom: 6px; }
 .member .frame__slot { aspect-ratio: 1; }
 
-.social { padding: 24px; border-radius: var(--r); background: var(--bg-2); border-left: 3px solid var(--go); }
+.social { padding: 24px; border-radius: var(--r); background: var(--bg-2); border: 1px solid var(--line); }
 .social p:last-child { margin: 0; }
 
 /* --- FAQ --- */
@@ -594,8 +597,8 @@ a.contact:hover { border-color: var(--led); }
   .logo { gap: 8px; }
   .logo svg, .logo img { width: 30px; height: 30px; }
   .logo span { font-size: 12px; }
-  .logo b { font-size: 9px; letter-spacing: .14em; }
-  .lang button { padding: 5px 7px; }
+  .logo b { font-size: 11px; letter-spacing: .12em; }
+  .lang button { padding: 0 8px; min-width: 36px; min-height: 36px; }
   .menu-btn { padding: 7px; }
   .menu-btn__label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   .menu-btn__icon { width: 30px; height: 30px; }
@@ -609,7 +612,7 @@ a.contact:hover { border-color: var(--led); }
 
   .gallery { gap: 14px; margin: 28px 0; }
   .frame::before, .frame::after { width: 16px; height: 16px; }
-  .frame__slot::before { font-size: 10px; top: 8px; left: 10px; }
+  .frame__slot::before { font-size: 11px; top: 8px; left: 10px; }
 
   .lead-person .frame { max-width: 260px; }
   .crew { gap: 14px; }
@@ -620,7 +623,7 @@ a.contact:hover { border-color: var(--led); }
   .member .frame { grid-row: span 3; }
   .member .frame::before, .member .frame::after { display: none; }
   .member .frame__slot { padding: 6px; font-size: 0; }
-  .member .frame__slot::before { font-size: 9px; }
+  .member .frame__slot::before { font-size: 10px; }
   .member .frame__slot:has(img)::before { display: none; }
   .member .frame__slot > span { display: none; }
   .member h3 { margin: 0; align-self: end; }
@@ -636,7 +639,7 @@ a.contact:hover { border-color: var(--led); }
 
   .contacts { grid-template-columns: 1fr 1fr; gap: 8px; }
   .contact { padding: 12px 14px; font-size: 14px; }
-  .contact small { font-size: 10px; }
+  .contact small { font-size: 11px; }
   .contact--main { grid-column: span 2; }
 }
 
@@ -677,7 +680,7 @@ a.contact:hover { border-color: var(--led); }
 .skip:focus { top: 12px; }
 
 .test-badge {
-  font: 500 10px/1 var(--mono); letter-spacing: .08em; text-decoration: none;
+  font: 500 11px/1 var(--mono); letter-spacing: .08em; text-decoration: none;
   color: #10140a; background: #ffb547; padding: 5px 7px; border-radius: 4px;
   margin-left: -4px;
 }
@@ -696,7 +699,7 @@ a.contact:hover { border-color: var(--led); }
 .rent-promo .btn--line { color: var(--go); border-color: var(--go); background: transparent; }
 
 .badge-new, .hero__new b {
-  font: 600 10px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; font-style: normal;
+  font: 600 11px/1 var(--mono); text-transform: uppercase; letter-spacing: .08em; font-style: normal;
   color: #10140a; background: var(--led-2); padding: 4px 6px; border-radius: 4px;
   box-shadow: 0 0 14px rgba(255, 59, 141, .5);
 }
@@ -795,23 +798,16 @@ a.contact:hover { border-color: var(--led); }
 
 /* --- білий неон: світлий текст спалахує по літерах під час прокручування --- */
 
-.neon.wait { filter: brightness(.45); }
+/* Літери анімують лише opacity (дешево для телефону). Світіння (text-shadow) вмикається
+   один раз, коли заголовок уже засвітився, а не перемальовується на кожному кадрі. */
+.neon.wait { opacity: .4; }
 .neon .nw { white-space: nowrap; }
-.neon .ch { animation: ch-on .7s ease-out both; }
-/* літера: з тьмяної — коротко білий спалах — звичайний колір; світіння дає батьківський елемент */
-@keyframes ch-on {
-  0%   { opacity: .3; }
-  40%  { opacity: 1; color: #fff; }
-  100% { opacity: 1; }
+.neon .ch { animation: ch-on .42s cubic-bezier(.16, 1, .3, 1) both; }
+@keyframes ch-on { from { opacity: .25; } to { opacity: 1; } }
+.neon.lit-done {
+  text-shadow: 0 0 3px rgba(255,255,255,.4), 0 0 14px rgba(190,232,255,.2);
+  transition: text-shadow .5s ease;
 }
-.neon.lighting, .neon.lit-done {
-  text-shadow: 0 0 3px rgba(255,255,255,.45), 0 0 12px rgba(255,255,255,.25), 0 0 30px rgba(190,232,255,.16);
-}
-.lead.neon.lighting, .lead.neon.lit-done, .hero__sub.neon.lighting, .hero__sub.neon.lit-done {
-  text-shadow: 0 0 10px rgba(255,255,255,.22), 0 0 24px rgba(190,232,255,.1);
-}
-/* на телефоні довгі абзаци просто плавно світлішають */
-.neon.fade { transition: filter .9s ease; }
 
 /* --- фото: без кутових рамок, повільна блакитна пульсація, яскравіше при наведенні ---
    Світіння — окремі шари за фото (::before/::after), анімуються лише opacity і transform,
@@ -850,7 +846,7 @@ a.contact:hover { border-color: var(--led); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .neon.wait { filter: none; }
+  .neon.wait { opacity: 1; }
   .neon .ch { animation: none; }
   .frame.glow::after { animation: none; opacity: .7; transform: none; }
 }
@@ -858,3 +854,29 @@ a.contact:hover { border-color: var(--led); }
 /* телефон: траса без SVG-розмиття, трохи товщі лінії замість світіння */
 .hero__track.lite .trail { stroke-width: 4; }
 .hero__track.lite .gates rect { stroke-width: 3.5; }
+
+/* --- головна: заключний заклик --- */
+.hero__slogan { font: 500 clamp(1rem, 2.2vw, 1.15rem)/1.3 var(--head); color: var(--led); margin: -.2em 0 .9em; }
+
+.finale {
+  display: grid; gap: 20px 40px; align-items: center;
+  margin: 8px 0 clamp(24px, 6vw, 72px); padding: clamp(24px, 4vw, 44px);
+  border: 1px solid var(--line); border-radius: 18px;
+  background: radial-gradient(120% 140% at 100% 0%, rgba(195, 255, 58, .08), transparent 55%), var(--bg-2);
+}
+.finale h2 { margin-bottom: .35em; }
+.finale p { margin: 0; color: #c3cbd8; }
+.finale__act .signup__alt { margin-top: 12px; font-size: 14px; color: var(--dim); }
+@media (min-width: 820px) { .finale { grid-template-columns: 1.2fr auto; } }
+@media (max-width: 719px) { .finale__act .btn { width: 100%; } }
+
+.page-head .btn { margin-top: 8px; }
+
+/* --- помилки полів --- */
+.field-err { display: block; margin-top: 6px; font-size: 13px; font-weight: 500; color: #ff8fb8; }
+
+/* --- виділення тексту й курсор у кольорах траси --- */
+::selection { background: rgba(47, 217, 255, .35); color: #fff; }
+input, textarea { caret-color: var(--go); }
+
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
