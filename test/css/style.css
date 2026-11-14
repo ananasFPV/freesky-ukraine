@@ -797,49 +797,64 @@ a.contact:hover { border-color: var(--led); }
 
 .neon.wait { filter: brightness(.45); }
 .neon .nw { white-space: nowrap; }
-.neon .ch { display: inline; animation: ch-on .9s ease-out both; }
+.neon .ch { animation: ch-on .7s ease-out both; }
+/* літера: з тьмяної — коротко білий спалах — звичайний колір; світіння дає батьківський елемент */
 @keyframes ch-on {
-  0%   { opacity: .35; text-shadow: none; }
-  35%  { opacity: 1; color: #fff; text-shadow: 0 0 4px #fff, 0 0 14px rgba(255,255,255,.8), 0 0 30px rgba(190,232,255,.6); }
-  100% { opacity: 1; text-shadow: 0 0 3px rgba(255,255,255,.45), 0 0 12px rgba(255,255,255,.25), 0 0 30px rgba(190,232,255,.16); }
+  0%   { opacity: .3; }
+  40%  { opacity: 1; color: #fff; }
+  100% { opacity: 1; }
 }
-.neon.lit-done {
+.neon.lighting, .neon.lit-done {
   text-shadow: 0 0 3px rgba(255,255,255,.45), 0 0 12px rgba(255,255,255,.25), 0 0 30px rgba(190,232,255,.16);
 }
-.lead.neon.lit-done, .hero__sub.neon.lit-done { text-shadow: 0 0 10px rgba(255,255,255,.22), 0 0 24px rgba(190,232,255,.1); }
-.lead.neon .ch, .hero__sub.neon .ch { animation-name: ch-on-soft; }
-@keyframes ch-on-soft {
-  0%   { opacity: .35; text-shadow: none; }
-  35%  { opacity: 1; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,.6), 0 0 20px rgba(190,232,255,.35); }
-  100% { opacity: 1; text-shadow: 0 0 10px rgba(255,255,255,.22), 0 0 24px rgba(190,232,255,.1); }
+.lead.neon.lighting, .lead.neon.lit-done, .hero__sub.neon.lighting, .hero__sub.neon.lit-done {
+  text-shadow: 0 0 10px rgba(255,255,255,.22), 0 0 24px rgba(190,232,255,.1);
 }
+/* на телефоні довгі абзаци просто плавно світлішають */
+.neon.fade { transition: filter .9s ease; }
 
-/* --- фото: без кутових рамок, повільна блакитна пульсація, яскравіше при наведенні --- */
+/* --- фото: без кутових рамок, повільна блакитна пульсація, яскравіше при наведенні ---
+   Світіння — окремі шари за фото (::before/::after), анімуються лише opacity і transform,
+   тож браузер малює їх на відеокарті й не перемальовує сторінку щокадру. */
 
-.frame::before, .frame::after { display: none; }
-
-@property --pulse { syntax: "<number>"; inherits: false; initial-value: 0; }
-@property --boost { syntax: "<number>"; inherits: false; initial-value: 1; }
-
-.frame__slot:has(> img, > video):not(.frame__slot--logo) {
-  --boost: 1;
-  box-shadow:
-    0 0 calc(26px + 14px * var(--pulse) * var(--boost)) calc(-4px + 5px * var(--pulse) + 4px * (var(--boost) - 1)) rgba(47, 217, 255, calc((.12 + .14 * var(--pulse)) * var(--boost))),
-    0 18px calc(60px + 26px * var(--pulse)) -16px rgba(47, 217, 255, calc((.15 + .12 * var(--pulse)) * var(--boost)));
-  animation: blob 6.6s ease-in-out infinite;
-  transition: --boost .6s ease, border-color .6s ease;
+.frame.glow { isolation: isolate; }
+.frame.glow::before, .frame.glow::after,
+.frame.glow:hover::before, .frame.glow:hover::after {
+  display: block; content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: -9%; right: -6%; bottom: -12%; left: -6%; width: auto; height: auto;
+  border: 0; border-radius: 30px;
 }
-.frame:nth-child(3n+2) .frame__slot { animation-delay: -2.2s; }
-.frame:nth-child(3n) .frame__slot { animation-delay: -4.4s; }
-@keyframes blob { 0%, 100% { --pulse: 0; } 50% { --pulse: 1; } }
+/* пульс */
+.frame.glow::after {
+  background: radial-gradient(closest-side, rgba(47, 217, 255, .34), rgba(47, 217, 255, .12) 60%, transparent);
+  opacity: .5; transform: scale(.95);
+  animation: blob 6.6s ease-in-out infinite paused;
+  transition: none;
+}
+.frame.glow.vis::after { animation-play-state: running; will-change: opacity, transform; }
+@keyframes blob { 0%, 100% { opacity: .5; transform: scale(.95); } 50% { opacity: .9; transform: scale(1.02); } }
+.frame.glow:nth-child(3n+2)::after { animation-delay: -2.2s; }
+.frame.glow:nth-child(3n)::after { animation-delay: -4.4s; }
+/* яскравіше при наведенні */
+.frame.glow::before {
+  background: radial-gradient(closest-side, rgba(47, 217, 255, .55), rgba(47, 217, 255, .2) 60%, transparent);
+  opacity: 0; transition: opacity .6s ease;
+}
+.frame.glow:hover::before { opacity: 1; }
 
+.frame.glow .frame__slot { transition: border-color .6s ease; }
 .frame__slot img, .frame__slot video { transition: filter .6s ease, transform .8s var(--ease); }
-.frame:hover .frame__slot:has(> img, > video) { --boost: 2.2; border-color: rgba(47, 217, 255, .55); }
-.frame:hover .frame__slot img, .frame:hover .frame__slot video { filter: brightness(1.1) saturate(1.15); transform: scale(1.02); }
+.frame.glow:hover .frame__slot { border-color: rgba(47, 217, 255, .55); }
+@media (hover: hover) {
+  .frame.glow:hover .frame__slot img, .frame.glow:hover .frame__slot video { filter: brightness(1.1) saturate(1.15); transform: scale(1.02); }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .neon.wait { filter: none; }
   .neon .ch { animation: none; }
-  .frame__slot:has(> img, > video) { animation: none; }
-  .frame:hover .frame__slot img, .frame:hover .frame__slot video { transform: none; }
+  .frame.glow::after { animation: none; opacity: .7; transform: none; }
 }
+
+/* телефон: траса без SVG-розмиття, трохи товщі лінії замість світіння */
+.hero__track.lite .trail { stroke-width: 4; }
+.hero__track.lite .gates rect { stroke-width: 3.5; }

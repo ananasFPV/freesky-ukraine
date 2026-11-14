@@ -302,23 +302,64 @@
       // літери йдуть одна за одною; довгий текст іде швидше, щоб не тягнулося
       var step = Math.max(8, Math.min(55, 1500 / Math.max(chars.length, 1)));
       chars.forEach(function (c, i) { c.style.animationDelay = Math.round(i * step) + 'ms'; });
+      el.classList.add('lighting');
       el.classList.remove('wait');
       setTimeout(function () {
         // повертаємо звичайну розмітку (щоб працював перемикач мови) і лишаємо світіння
         if (el.querySelector('.ch')) el.innerHTML = html;
         el.classList.add('lit-done');
-      }, chars.length * step + 1000);
+        el.classList.remove('lighting');
+      }, chars.length * step + 800);
+    }
+
+    // на вузьких екранах довгі абзаци не ділимо на літери: менше роботи для телефону
+    var narrow = window.matchMedia('(max-width: 719px)').matches;
+    function fade(el) {
+      el.classList.add('fade', 'lit-done');
+      el.classList.remove('wait');
     }
 
     var seen = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
         seen.unobserve(en.target);
-        setTimeout(function () { light(en.target); }, 150);
+        var el = en.target;
+        setTimeout(function () {
+          if (narrow && el.matches('.lead, .hero__sub')) fade(el); else light(el);
+        }, 150);
       });
     }, { rootMargin: '0px 0px -15% 0px', threshold: 0.2 });
     targets.forEach(function (el) { el.classList.add('neon', 'wait'); seen.observe(el); });
   })();
+
+  // --- світіння за фото: вмикаємо пульс лише для фото, які зараз на екрані ---
+
+  (function () {
+    var frames = [].slice.call(document.querySelectorAll('.frame')).filter(function (f) {
+      return f.querySelector('.frame__slot > img, .frame__slot > video') && !f.querySelector('.frame__slot--logo');
+    });
+    frames.forEach(function (f) { f.classList.add('glow'); });
+    if (!('IntersectionObserver' in window)) { frames.forEach(function (f) { f.classList.add('vis'); }); return; }
+    var io2 = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { en.target.classList.toggle('vis', en.isIntersecting); });
+    }, { rootMargin: '80px 0px' });
+    frames.forEach(function (f) { io2.observe(f); });
+  })();
+
+  // --- головний екран: дрони й траса ---
+  // На телефоні прибираємо SVG-розмиття (воно найважче для графіки), а коли екран
+  // не видно — ставимо анімацію на паузу, щоб не забирала ресурси у відео й прокрутки.
+  if (heroTrack) {
+    if (window.matchMedia('(max-width: 719px), (pointer: coarse)').matches) {
+      heroTrack.querySelectorAll('[filter]').forEach(function (n) { n.removeAttribute('filter'); });
+      heroTrack.classList.add('lite');
+    }
+    if (!calm && heroTrack.pauseAnimations && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) heroTrack.unpauseAnimations(); else heroTrack.pauseAnimations();
+      }).observe(heroTrack);
+    }
+  }
 
   // --- анімація успішної заявки: форма згортається, малюється зелена галочка ---
 
