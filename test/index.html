@@ -6,7 +6,7 @@
   <title>[ТЕСТ] Free Sky Ukraine — школа FPV-дронів і STEM для дітей</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Школа FPV-дронів і STEM для дітей 6–17 років. Київ і Вінниця. Перше заняття безкоштовне. Оренда траси погодинно.">
-  <meta name="theme-color" content="#b9dbff">
+  <meta name="theme-color" content="#07090f">
   <meta property="og:title" content="Free Sky Ukraine — більше, ніж школа дронів">
   <meta property="og:description" content="FPV-пілотування і 3D-друк для дітей 6–17 років. Перше заняття безкоштовне.">
   <meta property="og:type" content="website">
@@ -41,19 +41,19 @@
   <link rel="icon" href="img/logo.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300;400;500;600&family=Sofia+Sans+Extra+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=test-202611150300">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=test-202611150400">
 </head>
 <body>
 <a class="skip" href="#app" data-i18n="skip">Перейти до змісту</a>
 
 <header class="topbar">
   <a class="logo" href="#/" aria-label="Free Sky Ukraine">
-    <svg class="logo__mark" viewBox="0 0 40 40" width="36" height="36" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="2.6"><circle cx="11" cy="11" r="7"/><circle cx="29" cy="11" r="7"/><circle cx="11" cy="29" r="7"/><circle cx="29" cy="29" r="7"/></g><path d="M14 14l12 12M26 14L14 26" stroke="currentColor" stroke-width="3.4" stroke-linecap="round"/><rect x="16" y="16" width="8" height="8" rx="2" fill="var(--sun)"/></svg>
+    <img src="img/logo.svg" alt="" width="34" height="34">
     <span>Free Sky<b>Ukraine</b></span>
   </a>
   <a class="test-badge" href="https://freeskyukraine.com/" title="Це тестова копія. Натисніть, щоб відкрити основний сайт">ТЕСТ</a>
-  <a class="topbar__link" href="#/rent" data-i18n="cta.rent.short">Оренда траси</a>
+  <a class="topbar__rent" href="#/rent" data-i18n="cta.rent.short">Оренда траси</a>
   <a class="topbar__cta" href="#/trial" data-i18n="cta.short">Пробне заняття</a>
   <div class="lang" role="group" aria-label="Мова / Language">
     <button type="button" data-lang="uk" aria-pressed="true">UA</button>
@@ -66,6 +66,7 @@
 </header>
 
 <nav class="menu" id="menu" hidden>
+  <div class="menu__track" aria-hidden="true"></div>
   <ol class="menu__list">
     <li><a href="#/"><span data-i18n="nav.home">Головна</span></a></li>
     <li><a href="#/about"><span data-i18n="nav.about">Про школу</span></a></li>
@@ -80,134 +81,192 @@
     <li><a href="#/sponsors"><span data-i18n="nav.sponsors">Наші спонсори та партнери</span></a></li>
   </ol>
   <div class="menu__foot">
-    <a href="https://wa.me/380672392503" target="_blank" rel="noopener">WhatsApp · +380 67 239 2503</a>
+    <a href="https://wa.me/380672392503" target="_blank" rel="noopener">WhatsApp</a>
     <a href="https://www.instagram.com/freeskyukraine/" target="_blank" rel="noopener">Instagram</a>
     <a href="https://www.facebook.com/FreeSkyUkraine/" target="_blank" rel="noopener">Facebook</a>
+    <a href="https://wa.me/380672392503" target="_blank" rel="noopener">+380 67 239 2503</a>
   </div>
 </nav>
+
+<div class="wipe" aria-hidden="true"><i></i><i></i><i></i></div>
 
 <main id="app">
 
   <!-- 01 Головна -->
   <section class="view" data-view="home">
-    <div class="story">
-      <div class="stage" aria-hidden="true"><canvas id="drone"></canvas></div>
+    <div class="hero">
+      <svg class="hero__track" width="800" height="500" viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+        <defs>
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="4" result="b"/>
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <defs>
+          <symbol id="whoop" viewBox="-21 -21 42 42" overflow="visible">
+            <path class="wh-frame" d="M-4 -8 L4 -8 L8 -4 L8 4 L4 8 L-4 8 L-8 4 L-8 -4Z M-10 -10 L10 10 M10 -10 L-10 10"/>
+            <g transform="translate(-10 -10)">
+              <circle r="8.6" class="wh-duct"/>
+              <g class="wh-prop"><ellipse rx="6.4" ry="1.5"/><ellipse rx="6.4" ry="1.5" transform="rotate(120)"/><ellipse rx="6.4" ry="1.5" transform="rotate(240)"/>
+                <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="0.22s" repeatCount="indefinite"/></g>
+              <circle r="1.8" class="wh-hub"/>
+            </g>
+            <g transform="translate(10 -10)">
+              <circle r="8.6" class="wh-duct"/>
+              <g class="wh-prop"><ellipse rx="6.4" ry="1.5"/><ellipse rx="6.4" ry="1.5" transform="rotate(120)"/><ellipse rx="6.4" ry="1.5" transform="rotate(240)"/>
+                <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="0.24s" repeatCount="indefinite"/></g>
+              <circle r="1.8" class="wh-hub"/>
+            </g>
+            <g transform="translate(-10 10)">
+              <circle r="8.6" class="wh-duct"/>
+              <g class="wh-prop"><ellipse rx="6.4" ry="1.5"/><ellipse rx="6.4" ry="1.5" transform="rotate(120)"/><ellipse rx="6.4" ry="1.5" transform="rotate(240)"/>
+                <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="0.26s" repeatCount="indefinite"/></g>
+              <circle r="1.8" class="wh-hub"/>
+            </g>
+            <g transform="translate(10 10)">
+              <circle r="8.6" class="wh-duct"/>
+              <g class="wh-prop"><ellipse rx="6.4" ry="1.5"/><ellipse rx="6.4" ry="1.5" transform="rotate(120)"/><ellipse rx="6.4" ry="1.5" transform="rotate(240)"/>
+                <animateTransform attributeName="transform" type="rotate" from="0" to="-360" dur="0.28s" repeatCount="indefinite"/></g>
+              <circle r="1.8" class="wh-hub"/>
+            </g>
+            <rect x="-6" y="-5.5" width="11" height="11" rx="2" class="wh-board"/>
+            <path class="wh-canopy" d="M-3 -4.5 Q6 -5.5 7 0 Q6 5.5 -3 4.5 Q-1 0 -3 -4.5Z"/>
+            <circle cx="4.8" r="1.7" class="wh-cam"/>
+            <path class="wh-ant" d="M-5 1 L-12 4"/>
+          </symbol>
+          <path id="lap" pathLength="1000" d="M80 380 C140 220 180 120 260 120 S400 330 470 330 S640 110 700 110 S780 380 720 400 S200 470 80 380Z"/>
+        </defs>
+        <g class="track-dim">
+          <use href="#lap" class="track-line"/>
+          <use href="#lap" class="trail trail--a" filter="url(#glow)" stroke-dasharray="90 910"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="6s" begin="-0s" repeatCount="indefinite"/></use>
+          <use href="#lap" class="trail trail--b" filter="url(#glow)" stroke-dasharray="90 910"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="6s" begin="-2.6s" repeatCount="indefinite"/></use>
+          <use href="#lap" class="trail trail--c" filter="url(#glow)" stroke-dasharray="90 910"><animate attributeName="stroke-dashoffset" from="1000" to="0" dur="6s" begin="-4.4s" repeatCount="indefinite"/></use>
+          <g class="gates" filter="url(#glow)" fill="none">
+            <rect x="62" y="356" width="36" height="46" rx="3" transform="rotate(-25 80 380)"/>
+            <rect x="242" y="96" width="36" height="46" rx="3" transform="rotate(80 260 120)"/>
+            <rect x="452" y="306" width="36" height="46" rx="3" transform="rotate(95 470 330)"/>
+            <rect x="682" y="86" width="36" height="46" rx="3" transform="rotate(80 700 110)"/>
+            <rect x="702" y="376" width="36" height="46" rx="3" transform="rotate(-70 720 400)"/>
+          </g>
+        </g>
+        <use href="#whoop" class="drone drone--a" x="-16" y="-16" width="32" height="32"><animateMotion dur="6s" begin="-0.54s" repeatCount="indefinite" rotate="auto"><mpath href="#lap"/></animateMotion></use>
+        <use href="#whoop" class="drone drone--b" x="-16" y="-16" width="32" height="32"><animateMotion dur="6s" begin="-3.14s" repeatCount="indefinite" rotate="auto"><mpath href="#lap"/></animateMotion></use>
+        <use href="#whoop" class="drone drone--c" x="-16" y="-16" width="32" height="32"><animateMotion dur="6s" begin="-4.94s" repeatCount="indefinite" rotate="auto"><mpath href="#lap"/></animateMotion></use>
+      </svg>
 
-      <div class="hero">
-        <div class="hero__inner">
-          <h1 data-i18n="hero.title">Школа FPV-дронів і STEM для дітей <span class="nowrap">6–17 років</span></h1>
-          <p class="hero__slogan" data-i18n="slogan">Більше, ніж школа дронів</p>
-          <p class="hero__sub" data-i18n="hero.sub">Від симулятора до справжніх польотів. У кожної дитини — свій план. Київ і Вінниця.</p>
-          <div class="hero__act">
-            <a class="btn btn--go" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
-            <a class="link-arrow" href="#/rent"><em class="badge-new" data-i18n="new">нове</em><span data-i18n="hero.rent">Оренда траси погодинно</span></a>
-          </div>
-          <ul class="facts">
-            <li data-i18n="fact.age"><b>6–17</b> років</li>
-            <li data-i18n="fact.kids"><b>100+</b> учнів</li>
-            <li data-i18n="fact.since">з <b>2022</b> року</li>
-            <li data-i18n="fact.gear">техніка наша, купувати нічого не треба</li>
-          </ul>
+      <div class="hero__inner">
+        <a class="hero__new" href="#/rent"><b data-i18n="new">нове</b><span data-i18n="hero.rent">Оренда траси погодинно</span></a>
+        <h1 data-i18n="hero.title">Школа FPV-дронів і STEM для дітей <span class="nowrap">6–17 років</span></h1>
+        <p class="hero__slogan" data-i18n="slogan">Більше, ніж школа дронів</p>
+        <p class="hero__sub" data-i18n="hero.sub">Від симулятора до справжніх польотів. У кожної дитини — свій план. Київ і Вінниця.</p>
+        <a class="btn btn--go" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
+
+        <ul class="facts">
+          <li data-i18n="fact.age"><b>6–17</b> років</li>
+          <li data-i18n="fact.kids"><b>100+</b> учнів</li>
+          <li data-i18n="fact.since">з <b>2022</b> року</li>
+          <li data-i18n="fact.gear">техніка наша, купувати нічого не треба</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker__track">
+        <div class="ticker__group">
+          <span data-i18n="tick.w1">Вчись</span><i></i>
+          <span data-i18n="tick.w2">Досліджуй</span><i></i>
+          <span data-i18n="tick.w3">Перемагай</span><i></i>
+          <span data-i18n="tick.w4">Літай</span><i></i>
+          <span data-i18n="tick.w5">Конструюй</span><i></i>
+          <span data-i18n="tick.w6">Друкуй у 3D</span><i></i>
+        </div>
+        <div class="ticker__group" aria-hidden="true">
+          <span data-i18n="tick.w1">Вчись</span><i></i>
+          <span data-i18n="tick.w2">Досліджуй</span><i></i>
+          <span data-i18n="tick.w3">Перемагай</span><i></i>
+          <span data-i18n="tick.w4">Літай</span><i></i>
+          <span data-i18n="tick.w5">Конструюй</span><i></i>
+          <span data-i18n="tick.w6">Друкуй у 3D</span><i></i>
         </div>
       </div>
+    </div>
 
-      <div class="anatomy">
-        <div class="step step--intro">
+    <div class="wrap">
+      <div class="split rv">
+        <div>
           <h2 data-i18n="home.notjust">Ми не просто вчимо літати</h2>
           <p data-i18n="home.notjust.p">Діти розбираються в будові дрона, акумуляторах і радіозв'язку, а далі переходять до інженерії та 3D-друку. Наша мета — зацікавити дитину технологіями, а не лише навчити керувати дроном.</p>
           <a class="link-arrow" href="#/about" data-i18n="home.more">Про школу та методику</a>
         </div>
-        <article class="step" data-part="props">
-          <h3 data-i18n="an.props.t">Пропелери й мотори</h3>
-          <p data-i18n="an.props">Чотири мотори тримають дрон у повітрі. Перед кожним польотом перевіряємо пропелери.</p>
-        </article>
-        <article class="step" data-part="canopy">
-          <h3 data-i18n="an.cam.t">FPV-камера</h3>
-          <p data-i18n="an.cam">Картинка з камери йде в окуляри пілота: дитина бачить трасу очима дрона.</p>
-        </article>
-        <article class="step" data-part="board">
-          <h3 data-i18n="an.fc.t">Політний контролер</h3>
-          <p data-i18n="an.fc">«Мозок» дрона. Як він влаштований, розбираємо на технічних лекціях.</p>
-        </article>
-        <article class="step" data-part="frame">
-          <h3 data-i18n="an.frame.t">Рама</h3>
-          <p data-i18n="an.frame">Легка, із захистом пропелерів. Рами й деталі учні проєктують і друкують на 3D-принтерах.</p>
-        </article>
-        <article class="step" data-part="battery">
-          <h3 data-i18n="an.bat.t">Акумулятор</h3>
-          <p data-i18n="an.bat">Вчимо поводитися з акумуляторами безпечно й перевіряти їх перед стартом.</p>
-        </article>
-        <div class="step step--out">
-          <h2 data-i18n="an.out.t">Зібрали — і на трасу</h2>
+        <figure class="frame frame--wide">
+          <div class="frame__slot" data-label="IMG 01"><img src="img/photos/hands-pocket.webp" alt="Руки на пульті RadioMaster Pocket" loading="lazy" style="object-position:center 45%">
+            <span data-i18n="ph.table">Стіл з дронами, пультами й окулярами</span>
+          </div>
+        </figure>
+      </div>
+
+      <section class="xray" aria-labelledby="xray-t">
+        <div class="xray__pin">
+          <div class="xray__head">
+            <h2 id="xray-t" data-i18n="an.t">Що всередині дрона</h2>
+            <p class="xray__hint" data-i18n="an.hint">Прокручуйте — дрон розбереться на деталі</p>
+          </div>
+          <div class="xray__stage">
+            <canvas class="xray__canvas" width="720" height="720" aria-hidden="true"></canvas>
+            <img class="xray__poster" src="img/drone/m/f000.webp" alt="Мікродрон FPV, який розбирається на деталі" width="480" height="480" loading="lazy">
+            <div class="xray__bar" aria-hidden="true"><i></i></div>
+          </div>
+          <ol class="xray__parts">
+            <li data-at="0.28"><b data-i18n="an.props.t">Пропелери й мотори</b><span data-i18n="an.props">Чотири мотори тримають дрон у повітрі. Перед кожним польотом перевіряємо пропелери.</span></li>
+            <li data-at="0.42"><b data-i18n="an.cam.t">FPV-камера</b><span data-i18n="an.cam">Картинка з камери йде в окуляри пілота: дитина бачить трасу очима дрона.</span></li>
+            <li data-at="0.56"><b data-i18n="an.fc.t">Політний контролер</b><span data-i18n="an.fc">«Мозок» дрона. Як він влаштований, розбираємо на технічних лекціях.</span></li>
+            <li data-at="0.70"><b data-i18n="an.frame.t">Рама з LED-захистом</b><span data-i18n="an.frame">Легка, із захистом пропелерів. Рами й деталі учні проєктують і друкують на 3D-принтерах.</span></li>
+            <li data-at="0.84"><b data-i18n="an.bat.t">Акумулятор</b><span data-i18n="an.bat">Вчимо поводитися з акумуляторами безпечно й перевіряти їх перед стартом.</span></li>
+          </ol>
+        </div>
+      </section>
+
+      <div class="cards cards--3">
+        <a class="card rv" href="#/courses">
+          <h3 data-i18n="nav.courses">Напрями</h3>
+          <p data-i18n="home.c1">FPV-пілотування, 3D-друк і технічні лекції.</p>
+        </a>
+        <a class="card rv" href="#/trial">
+          <h3 data-i18n="home.c2.t">Як проходить пробне</h3>
           <p data-i18n="home.c2">50 хвилин, безкоштовно, без досвіду. Техніку даємо ми.</p>
-          <a class="btn btn--go" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
-        </div>
-      </div>
-    </div>
-
-    <div class="rows">
-      <a class="row rv" href="#/courses">
-        <h3 data-i18n="nav.courses">Напрями</h3>
-        <p data-i18n="home.c1">FPV-пілотування, 3D-друк і технічні лекції.</p>
-      </a>
-      <a class="row rv" href="#/trial">
-        <h3 data-i18n="home.c2.t">Як проходить пробне</h3>
-        <p data-i18n="home.c2">50 хвилин, безкоштовно, без досвіду. Техніку даємо ми.</p>
-      </a>
-      <a class="row rv" href="#/team">
-        <h3 data-i18n="nav.team">Команда</h3>
-        <p data-i18n="pro5">Інструктори з досвідом у FPV понад 5 років.</p>
-      </a>
-    </div>
-
-    <div class="dusk" aria-hidden="true"></div>
-
-    <div class="track night" data-night>
-      <div class="track__hero">
-        <video src="img/video/gates-glow.mp4" poster="img/video/gates-glow.webp" muted autoplay loop playsinline preload="metadata" aria-label="LED-ворота траси в залі"></video>
-        <div class="track__copy">
-          <h2>Micro Drone Games</h2>
+        </a>
+        <a class="card rv" href="#/races">
+          <h3>Micro Drone Games</h3>
           <p data-i18n="home.c3">Щомісячні змагання на трасі з LED-воротами й табло часу.</p>
-          <a class="link-arrow" href="#/races" data-i18n="nav.races">Змагання</a>
+        </a>
+      </div>
+
+      <a class="rent-promo rv" href="#/rent">
+        <figure class="frame"><div class="frame__slot" data-label="TRACK"><video src="img/video/gates-glow.mp4" poster="img/video/gates-glow.webp" muted autoplay loop playsinline preload="metadata" aria-label="LED-ворота траси в залі"></video></div></figure>
+        <div>
+          <span class="badge-new" data-i18n="new">нове</span>
+          <h2 data-i18n="promo.t">Траса в оренду — погодинно</h2>
+          <p data-i18n="promo.p">Не лише для учнів. У Києві, по суботах і неділях, 1000 грн за годину: приходьте зі своїм дроном, з друзями чи командою: LED-ворота, кільця й тунель — ваші на годину або більше.</p>
+          <span class="btn btn--line" data-i18n="cta.rent">Забронювати трасу</span>
         </div>
-      </div>
+      </a>
 
-      <div class="reel" tabindex="0" aria-label="Фото з траси">
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/track-glow.webp" alt="Траса з воротами, кільцями й тунелем у підсвітці" loading="lazy"></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/race-1710.webp" alt="Змагання Micro Drone Games" loading="lazy" style="object-position:center 40%"></div></figure>
-        <figure class="frame"><div class="frame__slot"><video src="img/video/ring-pass.mp4" poster="img/video/ring-pass.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон проходить кільце траси"></video></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/timing-board.webp" alt="Табло з результатами заїздів" loading="lazy" style="object-position:center 25%"></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/awards.webp" alt="Нагородження учасників змагань" loading="lazy"></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/pilot-chairs.webp" alt="Крісла пілотів біля старту" loading="lazy" style="object-position:center 60%"></div></figure>
-      </div>
+      <blockquote class="quote rv">
+        <p data-i18n="quote">Моє завдання — не обрати за дитину професію. Моє завдання — відчинити їй двері.</p>
+        <cite data-i18n="quote.by">Сергій Ткачук, директор школи</cite>
+      </blockquote>
 
-      <div class="wrap">
-        <div class="rent-promo rv">
-          <div>
-            <em class="badge-new" data-i18n="new">нове</em>
-            <h2 data-i18n="promo.t">Траса в оренду — погодинно</h2>
-          </div>
-          <div>
-            <p data-i18n="promo.p">Не лише для учнів. У Києві, по суботах і неділях, 1000 грн за годину: приходьте зі своїм дроном, з друзями чи командою: LED-ворота, кільця й тунель — ваші на годину або більше.</p>
-            <a class="btn btn--line" href="#/rent" data-i18n="cta.rent">Забронювати трасу</a>
-          </div>
+      <aside class="finale rv">
+        <div class="finale__text">
+          <h2 data-i18n="trial.title">Перше заняття — безкоштовно</h2>
+          <p data-i18n="home.c2">50 хвилин, безкоштовно, без досвіду. Техніку даємо ми.</p>
         </div>
-
-        <blockquote class="quote rv">
-          <p data-i18n="quote">Моє завдання — не обрати за дитину професію. Моє завдання — відчинити їй двері.</p>
-          <cite data-i18n="quote.by">Сергій Ткачук, директор школи</cite>
-        </blockquote>
-      </div>
+        <div class="finale__act">
+          <a class="btn btn--go" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
+          <p class="signup__alt"><span data-i18n="f.alt">Або одразу в WhatsApp:</span> <a href="https://wa.me/380672392503" target="_blank" rel="noopener">+380 67 239 2503</a></p>
+        </div>
+      </aside>
     </div>
-
-    <div class="dawn" aria-hidden="true"></div>
-
-    <aside class="finale">
-      <h2 data-i18n="trial.title">Перше заняття — безкоштовно</h2>
-      <p data-i18n="trial.lead">Триває 50 хвилин. Досвід не потрібен, уся техніка наша.</p>
-      <a class="btn btn--ink" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
-      <p class="finale__alt"><span data-i18n="f.alt">Або одразу в WhatsApp:</span> <a href="https://wa.me/380672392503" target="_blank" rel="noopener">+380 67 239 2503</a></p>
-    </aside>
   </section>
 
   <!-- 02 Про школу -->
@@ -232,7 +291,7 @@
           <p data-i18n="method.p">Директор школи Сергій Ткачук — музикант і педагог за освітою. Він переніс у навчання дронів те, що знає кожен музикант.</p>
         </div>
         <figure class="frame">
-          <div class="frame__slot"><img src="img/photos/laptop-sim.webp" alt="Учень тренується на симуляторі" loading="lazy" style="object-position:center 40%">
+          <div class="frame__slot" data-label="IMG 02"><img src="img/photos/laptop-sim.webp" alt="Учень тренується на симуляторі" loading="lazy" style="object-position:center 40%">
             <span data-i18n="ph.hands">Руки на пульті, вид з-за плеча</span>
           </div>
         </figure>
@@ -258,10 +317,10 @@
       <p class="note rv" data-i18n="gear.note">Купувати свій дрон не потрібно.</p>
 
       <div class="gallery rv">
-        <figure class="frame"><div class="frame__slot"><video src="img/video/sim-kids.mp4" poster="img/video/sim-kids.webp" muted autoplay loop playsinline preload="metadata" aria-label="Діти тренуються на симуляторі Liftoff"></video></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/microdrone.webp" alt="Мікродрон і пульт крупно" loading="lazy" style="object-position:center 80%"><span data-i18n="ph.micro">Мікродрон крупно</span></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/gear-shelf.webp" alt="Окуляри Skyzone, пульти RadioMaster і мікродрони на полиці" loading="lazy" style="object-position:center 55%"></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/printers-a.webp" alt="3D-принтери Bambu Lab X1-Carbon і P2S" loading="lazy" style="object-position:center 45%"></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="IMG 03"><video src="img/video/sim-kids.mp4" poster="img/video/sim-kids.webp" muted autoplay loop playsinline preload="metadata" aria-label="Діти тренуються на симуляторі Liftoff"></video></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="IMG 04"><img src="img/photos/microdrone.webp" alt="Мікродрон і пульт крупно" loading="lazy" style="object-position:center 80%"><span data-i18n="ph.micro">Мікродрон крупно</span></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="IMG 05"><img src="img/photos/gear-shelf.webp" alt="Окуляри Skyzone, пульти RadioMaster і мікродрони на полиці" loading="lazy" style="object-position:center 55%"></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="IMG 06"><img src="img/photos/printers-a.webp" alt="3D-принтери Bambu Lab X1-Carbon і P2S" loading="lazy" style="object-position:center 45%"></div></figure>
       </div>
 
       <a class="btn btn--go rv" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
@@ -277,7 +336,7 @@
 
       <div class="courses">
         <article class="course rv">
-          <figure class="frame"><div class="frame__slot"><video src="img/video/gate-fly.mp4" poster="img/video/gate-fly.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон пролітає крізь LED-ворота"></video></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="FPV"><video src="img/video/gate-fly.mp4" poster="img/video/gate-fly.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон пролітає крізь LED-ворота"></video></div></figure>
           <div>
             <h2 data-i18n="fpv.t">FPV-пілотування</h2>
             <p data-i18n="fpv">Від симулятора до польотів на справжніх мікродронах трасою.</p>
@@ -285,7 +344,7 @@
           </div>
         </article>
         <article class="course rv">
-          <figure class="frame"><div class="frame__slot"><img src="img/photos/printers-b.webp" alt="3D-принтери Bambu Lab у класі" loading="lazy" style="object-position:center 55%"></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="3D"><img src="img/photos/printers-b.webp" alt="3D-принтери Bambu Lab у класі" loading="lazy" style="object-position:center 55%"></div></figure>
           <div>
             <h2 data-i18n="p3d.t">3D-друк</h2>
             <p data-i18n="p3d">Проєктування, друк рам і деталей для дронів на принтерах Bambu Lab.</p>
@@ -293,7 +352,7 @@
           </div>
         </article>
         <article class="course rv">
-          <figure class="frame"><div class="frame__slot"><img src="img/photos/drone-parts.webp" alt="Розібраний FPV-дрон на столі" loading="lazy" style="object-position:center"><span data-i18n="ph.lab">Розібраний дрон на столі</span></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="LAB"><img src="img/photos/drone-parts.webp" alt="Розібраний FPV-дрон на столі" loading="lazy" style="object-position:center"><span data-i18n="ph.lab">Розібраний дрон на столі</span></div></figure>
           <div>
             <h2 data-i18n="lec.t">Технічні лекції</h2>
             <p data-i18n="lec">Будова дрона і де застосовуються дрони. Проходять у дні занять.</p>
@@ -380,7 +439,7 @@
   </section>
 
   <!-- 05 Оренда траси -->
-  <section class="view night" data-view="rent" data-night hidden>
+  <section class="view" data-view="rent" hidden>
     <div class="wrap">
       <header class="page-head">
         <h1 data-i18n="rent.title">Оренда траси погодинно</h1>
@@ -388,7 +447,7 @@
         <button class="btn btn--go" type="button" data-scroll="rent" data-i18n="cta.rent">Забронювати трасу</button>
       </header>
 
-      <figure class="frame frame--wide rent-hero rv"><div class="frame__slot"><img src="img/photos/track-glow.webp" alt="Траса з воротами, кільцями й тунелем у підсвітці" loading="lazy" style="object-position:center 60%"></div></figure>
+      <figure class="frame frame--wide rent-hero rv"><div class="frame__slot" data-label="TRACK"><img src="img/photos/track-glow.webp" alt="Траса з воротами, кільцями й тунелем у підсвітці" loading="lazy" style="object-position:center 60%"></div></figure>
 
       <div class="prices rv">
         <div class="price price--hl">
@@ -470,15 +529,15 @@
       <p class="note rv" data-i18n="rent.addr">Точну адресу залу надсилаємо після підтвердження бронювання.</p>
 
       <div class="gallery rv">
-        <figure class="frame"><div class="frame__slot"><video src="img/video/ring-pass.mp4" poster="img/video/ring-pass.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон проходить кільце траси"></video></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/pilot-chairs.webp" alt="Крісла пілотів біля старту" loading="lazy" style="object-position:center 60%"></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/track-b.webp" alt="Ворота траси з підсвіткою" loading="lazy" style="object-position:center 55%"></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LAP"><video src="img/video/ring-pass.mp4" poster="img/video/ring-pass.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон проходить кільце траси"></video></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="START"><img src="img/photos/pilot-chairs.webp" alt="Крісла пілотів біля старту" loading="lazy" style="object-position:center 60%"></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="GATE"><img src="img/photos/track-b.webp" alt="Ворота траси з підсвіткою" loading="lazy" style="object-position:center 55%"></div></figure>
       </div>
     </div>
   </section>
 
   <!-- 06 Змагання -->
-  <section class="view night" data-view="races" data-night hidden>
+  <section class="view" data-view="races" hidden>
     <div class="wrap">
       <header class="page-head">
         <h1>Micro Drone Games</h1>
@@ -502,20 +561,20 @@
           </ul>
           <p class="meta" data-i18n="races.meta">Категорії 7–12 і 13–17 років · траса з LED-воротами · табло з часом · нагородження</p>
         </div>
-        <figure class="frame frame--tall"><div class="frame__slot"><img src="img/photos/race-1710.webp" alt="Змагання Micro Drone Games 17.10" loading="lazy" style="object-position:center 40%"><span data-i18n="ph.race">Фото зі змагань 17.10</span></div></figure>
+        <figure class="frame frame--tall"><div class="frame__slot" data-label="RACE"><img src="img/photos/race-1710.webp" alt="Змагання Micro Drone Games 17.10" loading="lazy" style="object-position:center 40%"><span data-i18n="ph.race">Фото зі змагань 17.10</span></div></figure>
       </div>
 
       <div class="gallery gallery--race rv">
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/track-b.webp" alt="Ворота траси з підсвіткою" loading="lazy" style="object-position:center 55%"><span data-i18n="ph.track">Траса з LED-воротами</span></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/awards.webp" alt="Нагородження учасників змагань" loading="lazy" style="object-position:center"><span data-i18n="ph.award">Нагородження</span></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/timing-board.webp" alt="Табло з результатами заїздів" loading="lazy" style="object-position:center 25%"><span data-i18n="ph.board">Табло з часом</span></div></figure>
-        <figure class="frame"><div class="frame__slot"><video src="img/video/fpv-screens.mp4" poster="img/video/fpv-screens.webp" muted autoplay loop playsinline preload="metadata" aria-label="Екрани з FPV-картинкою пілотів"></video></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LIVE 1"><img src="img/photos/track-b.webp" alt="Ворота траси з підсвіткою" loading="lazy" style="object-position:center 55%"><span data-i18n="ph.track">Траса з LED-воротами</span></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LIVE 2"><img src="img/photos/awards.webp" alt="Нагородження учасників змагань" loading="lazy" style="object-position:center"><span data-i18n="ph.award">Нагородження</span></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LIVE 3"><img src="img/photos/timing-board.webp" alt="Табло з результатами заїздів" loading="lazy" style="object-position:center 25%"><span data-i18n="ph.board">Табло з часом</span></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LIVE 4"><video src="img/video/fpv-screens.mp4" poster="img/video/fpv-screens.webp" muted autoplay loop playsinline preload="metadata" aria-label="Екрани з FPV-картинкою пілотів"></video></div></figure>
       </div>
 
       <div class="gallery rv">
-        <figure class="frame"><div class="frame__slot"><video src="img/video/ring-pass.mp4" poster="img/video/ring-pass.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон проходить кільце траси"></video></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/track-glow.webp" alt="Траса з воротами, кільцями й тунелем у підсвітці" loading="lazy" style="object-position:center 60%"></div></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/pilot-chairs.webp" alt="Крісла пілотів біля старту" loading="lazy" style="object-position:center 60%"></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LIVE 5"><video src="img/video/ring-pass.mp4" poster="img/video/ring-pass.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон проходить кільце траси"></video></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LIVE 6"><img src="img/photos/track-glow.webp" alt="Траса з воротами, кільцями й тунелем у підсвітці" loading="lazy" style="object-position:center 60%"></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LIVE 7"><img src="img/photos/pilot-chairs.webp" alt="Крісла пілотів біля старту" loading="lazy" style="object-position:center 60%"></div></figure>
       </div>
 
       <div class="next rv">
@@ -534,7 +593,7 @@
       </header>
 
       <article class="lead-person rv">
-        <figure class="frame frame--tall"><div class="frame__slot"><img src="img/photos/team-serhii.webp?v=1" alt="Сергій Ткачук, директор та інструктор" loading="lazy" style="object-position:center 25%"></div></figure>
+        <figure class="frame frame--tall"><div class="frame__slot" data-label="CREW 01"><img src="img/photos/team-serhii.webp?v=1" alt="Сергій Ткачук, директор та інструктор" loading="lazy" style="object-position:center 25%"></div></figure>
         <div>
           <h2 data-i18n="serhii">Сергій Ткачук</h2>
           <p class="meta" data-i18n="serhii.role">Директор та інструктор</p>
@@ -545,27 +604,27 @@
 
       <div class="crew rv">
         <div class="member">
-          <figure class="frame"><div class="frame__slot"><img src="img/photos/team-ivan.webp?v=2" alt="Іван, інструктор" loading="lazy" style="object-position:center 30%"></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="CREW 02"><img src="img/photos/team-ivan.webp?v=2" alt="Іван, інструктор" loading="lazy" style="object-position:center 30%"></div></figure>
           <h3 data-i18n="ivan">Іван</h3><p class="meta" data-i18n="instr">Інструктор</p><p data-i18n="exp.ivan">Досвід: 5 років польотів</p>
         </div>
         <div class="member">
-          <figure class="frame"><div class="frame__slot"><img src="img/photos/team-illia.webp?v=2" alt="Ілля, інструктор" loading="lazy" style="object-position:center 30%"></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="CREW 03"><img src="img/photos/team-illia.webp?v=2" alt="Ілля, інструктор" loading="lazy" style="object-position:center 30%"></div></figure>
           <h3 data-i18n="illia">Ілля</h3><p class="meta" data-i18n="instr">Інструктор</p><p data-i18n="exp.illia">Досвід: 2 роки польотів</p>
         </div>
         <div class="member">
-          <figure class="frame"><div class="frame__slot"><img src="img/photos/team-3d.webp?v=1" alt="Сергій, інструктор з 3D-друку" loading="lazy" style="object-position:center 30%"></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="CREW 04"><img src="img/photos/team-3d.webp?v=1" alt="Сергій, інструктор з 3D-друку" loading="lazy" style="object-position:center 30%"></div></figure>
           <h3 data-i18n="serhii.3d">Сергій</h3><p class="meta" data-i18n="instr.3d">Інструктор з 3D-друку</p>
         </div>
         <div class="member">
-          <figure class="frame"><div class="frame__slot"><span data-i18n="ph.photo">Фото <span class="tbd">уточнити</span></span></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="CREW 05"><span data-i18n="ph.photo">Фото <span class="tbd">уточнити</span></span></div></figure>
           <h3 data-i18n="volodia">Володимир</h3><p class="meta" data-i18n="instr.vin">Інструктор у Вінниці</p>
         </div>
         <div class="member">
-          <figure class="frame"><div class="frame__slot"><img src="img/photos/team-anna.webp?v=2" alt="Анна, PR-менеджер" loading="lazy" style="object-position:center 30%"></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="CREW 06"><img src="img/photos/team-anna.webp?v=2" alt="Анна, PR-менеджер" loading="lazy" style="object-position:center 30%"></div></figure>
           <h3 data-i18n="anna">Анна</h3><p class="meta" data-i18n="pr">PR-менеджер</p>
         </div>
         <div class="member">
-          <figure class="frame"><div class="frame__slot"><img src="img/photos/team-engineer.webp?v=1" alt="Володимир, інженер" loading="lazy" style="object-position:center 30%"></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="CREW 07"><img src="img/photos/team-engineer.webp?v=1" alt="Володимир, інженер" loading="lazy" style="object-position:center 30%"></div></figure>
           <h3 data-i18n="volodymyr">Володимир</h3><p class="meta" data-i18n="eng">Інженер</p><p data-i18n="eng.p">Розробив систему фіксації часу на наших змаганнях</p>
         </div>
       </div>
@@ -622,16 +681,16 @@
       </ul>
 
       <div class="gallery rv">
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/tech-explorers.webp" alt="Банер Tech Explorers by Dignitas у навчальному залі" loading="lazy" style="object-position:center 45%"></div><figcaption data-i18n="pp1">Лого партнера в навчальному залі</figcaption></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/flags-wide.webp" alt="Прапори Free Sky біля траси" loading="lazy" style="object-position:center 55%"></div><figcaption data-i18n="pp2">Прапори біля траси, де може бути ваш бренд</figcaption></figure>
-        <figure class="frame"><div class="frame__slot"><img src="img/photos/race-screens.webp" alt="Екрани з FPV-картинкою на змаганнях" loading="lazy" style="object-position:center 45%"></div><figcaption data-i18n="pp3">Змагання, які дивляться батьки й глядачі</figcaption></figure>
+        <figure class="frame"><div class="frame__slot" data-label="HUB"><img src="img/photos/tech-explorers.webp" alt="Банер Tech Explorers by Dignitas у навчальному залі" loading="lazy" style="object-position:center 45%"></div><figcaption data-i18n="pp1">Лого партнера в навчальному залі</figcaption></figure>
+        <figure class="frame"><div class="frame__slot" data-label="BRAND"><img src="img/photos/flags-wide.webp" alt="Прапори Free Sky біля траси" loading="lazy" style="object-position:center 55%"></div><figcaption data-i18n="pp2">Прапори біля траси, де може бути ваш бренд</figcaption></figure>
+        <figure class="frame"><div class="frame__slot" data-label="LIVE"><img src="img/photos/race-screens.webp" alt="Екрани з FPV-картинкою на змаганнях" loading="lazy" style="object-position:center 45%"></div><figcaption data-i18n="pp3">Змагання, які дивляться батьки й глядачі</figcaption></figure>
       </div>
 
       <h2 class="rv" data-i18n="fmt.t">Формати співпраці</h2>
       <div class="cards cards--3">
-        <div class="card rv"><h3>Classroom Hub</h3><p data-i18n="fmt1">Базова техніка для класу.</p></div>
-        <div class="card rv"><h3>Tournament Sponsor</h3><p data-i18n="fmt2">Техніка або призи для змагань.</p></div>
-        <div class="card rv"><h3>R&amp;D Partnership</h3><p data-i18n="fmt3">Тестування нової техніки.</p></div>
+        <div class="card rv"><span class="card__num">A</span><h3>Classroom Hub</h3><p data-i18n="fmt1">Базова техніка для класу.</p></div>
+        <div class="card rv"><span class="card__num">B</span><h3>Tournament Sponsor</h3><p data-i18n="fmt2">Техніка або призи для змагань.</p></div>
+        <div class="card rv"><span class="card__num">C</span><h3>R&amp;D Partnership</h3><p data-i18n="fmt3">Тестування нової техніки.</p></div>
       </div>
 
       <h2 class="rv" data-i18n="partners.cta">Написати про партнерство</h2>
@@ -663,9 +722,9 @@
 
       <h2 class="rv" data-i18n="cl.t">Так виглядає заняття</h2>
       <div class="gallery rv">
-        <figure class="frame"><div class="frame__slot"><video src="img/video/gates-glow.mp4" poster="img/video/gates-glow.webp" muted autoplay loop playsinline preload="metadata" aria-label="LED-ворота траси в залі"></video></div></figure>
-        <figure class="frame"><div class="frame__slot"><video src="img/video/sim-kids.mp4" poster="img/video/sim-kids.webp" muted autoplay loop playsinline preload="metadata" aria-label="Двоє дітей літають на симуляторах"></video></div></figure>
-        <figure class="frame"><div class="frame__slot"><video src="img/video/whoop-hover.mp4" poster="img/video/whoop-hover.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон висить над підлогою залу"></video></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="GATE"><video src="img/video/gates-glow.mp4" poster="img/video/gates-glow.webp" muted autoplay loop playsinline preload="metadata" aria-label="LED-ворота траси в залі"></video></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="SIM"><video src="img/video/sim-kids.mp4" poster="img/video/sim-kids.webp" muted autoplay loop playsinline preload="metadata" aria-label="Двоє дітей літають на симуляторах"></video></div></figure>
+        <figure class="frame"><div class="frame__slot" data-label="WHOOP"><video src="img/video/whoop-hover.mp4" poster="img/video/whoop-hover.webp" muted autoplay loop playsinline preload="metadata" aria-label="Мікродрон висить над підлогою залу"></video></div></figure>
       </div>
 
       <div class="places rv">
@@ -694,7 +753,7 @@
 
       <div class="sponsors">
         <article class="sponsor rv">
-          <figure class="frame"><div class="frame__slot frame__slot--logo"><img src="img/photos/dignitas.png" alt="Dignitas Ukraine" loading="lazy"></div></figure>
+          <figure class="frame"><div class="frame__slot frame__slot--logo" data-label="LOGO"><img src="img/photos/dignitas.png" alt="Dignitas Ukraine" loading="lazy"></div></figure>
           <div>
             <p class="tagline">#DignitasUkraine · #TechExplorers</p>
             <h2>Dignitas Ukraine</h2>
@@ -703,7 +762,7 @@
         </article>
 
         <article class="sponsor rv">
-          <figure class="frame"><div class="frame__slot"><span data-i18n="sp.100.logo">Логотип фонду</span></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="LOGO"><span data-i18n="sp.100.logo">Логотип фонду</span></div></figure>
           <div>
             <p class="tagline" data-i18n="sp.fund">Благодійний фонд</p>
             <h2 data-i18n="sp.100">Фонд «100%» <span class="tbd">уточнити повну назву</span></h2>
@@ -712,7 +771,7 @@
         </article>
 
         <article class="sponsor rv">
-          <figure class="frame"><div class="frame__slot"><span data-i18n="sp.other.logo">Логотип партнера</span></div></figure>
+          <figure class="frame"><div class="frame__slot" data-label="LOGO"><span data-i18n="sp.other.logo">Логотип партнера</span></div></figure>
           <div>
             <p class="tagline" data-i18n="sp.other.tag">Партнер</p>
             <h2 data-i18n="sp.other"><span class="tbd">назва партнера</span></h2>
@@ -722,6 +781,7 @@
       </div>
 
       <a class="card card--join rv" href="#/partners">
+        <span class="card__num">+</span>
         <h3 data-i18n="sp.join.t">Тут може бути ваш логотип</h3>
         <p data-i18n="sp.join">Дізнайтеся, як стати партнером школи і що ми можемо запропонувати.</p>
       </a>
@@ -735,17 +795,12 @@
 <a class="sticky-cta" href="#/trial" data-i18n="cta.sticky">Записатися на пробне</a>
 
 <footer class="footer">
-  <p class="footer__big" data-i18n="slogan">Більше, ніж школа дронів</p>
-  <div class="footer__cols">
-    <p><a href="#/trial" data-i18n="nav.trial">Пробне, розклад і ціни</a><a href="#/rent" data-i18n="nav.rent">Оренда траси</a><a href="#/faq" data-i18n="nav.faq">Питання батьків</a></p>
-    <p><a href="#/sponsors" data-i18n="nav.sponsors">Наші спонсори та партнери</a><a href="#/partners" data-i18n="nav.partners">Партнерам</a><a href="#/contacts" data-i18n="nav.contacts">Контакти</a></p>
-    <p><a href="https://wa.me/380672392503" target="_blank" rel="noopener">WhatsApp · +380 67 239 2503</a><a href="https://www.instagram.com/freeskyukraine/" target="_blank" rel="noopener">Instagram</a><a href="https://t.me/FreeSkyUkraine" target="_blank" rel="noopener">Telegram</a></p>
-  </div>
   <p class="footer__test">Тестова версія сайту. Основний сайт: <a href="https://freeskyukraine.com/">freeskyukraine.com</a></p>
-  <p class="footer__copy">© <span id="year">2026</span> Free Sky Ukraine</p>
+  <p>© <span id="year">2026</span> Free Sky Ukraine · <span data-i18n="slogan">Більше, ніж школа дронів</span></p>
+  <p><a href="#/rent" data-i18n="nav.rent">Оренда траси</a> · <a href="#/sponsors" data-i18n="nav.sponsors">Наші спонсори та партнери</a> · <a href="#/partners" data-i18n="nav.partners">Партнерам</a> · <a href="#/contacts" data-i18n="nav.contacts">Контакти</a></p>
 </footer>
 
-<script src="js/i18n.js?v=test-202611150300"></script>
-<script src="js/app.js?v=test-202611150300"></script>
+<script src="js/i18n.js?v=test-202611150400"></script>
+<script src="js/app.js?v=test-202611150400"></script>
 </body>
 </html>
