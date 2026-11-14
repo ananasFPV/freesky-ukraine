@@ -46,4 +46,4 @@ python3 -m http.server 8000
 
 ## Публікація
 
-GitHub Pages: Settings → Pages → Deploy from branch → `main` / root. Домен `freesky.com.ua` підключається там же.
+GitHub Pages: Settings → Pages → Deploy from branch → `main` / root. Домен `freeskyukraine.com` (файл `CNAME`; DNS у Namecheap: 4 A-записи @ → 185.199.108–111.153, CNAME www → ananasfpv.github.io).
