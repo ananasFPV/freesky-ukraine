@@ -793,48 +793,53 @@ a.contact:hover { border-color: var(--led); }
 .signup .agree input[type="checkbox"] { display: inline-block; padding: 0; width: 20px; height: 20px; margin: 1px 0 0; accent-color: var(--go); flex-shrink: 0; }
 [data-view="rent"] .schedule + h2 { margin-top: 44px; }
 
-/* --- білий неон: заголовки й світлий текст спалахують рядок за рядком під час прокручування --- */
+/* --- білий неон: світлий текст спалахує по літерах під час прокручування --- */
 
-@property --lit { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
-
-.neon {
-  --lit: 0%;
-  -webkit-mask-image: linear-gradient(180deg, #000 calc(var(--lit) - 14%), rgba(0, 0, 0, .3) var(--lit));
-          mask-image: linear-gradient(180deg, #000 calc(var(--lit) - 14%), rgba(0, 0, 0, .3) var(--lit));
-  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
-  -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
-  transition: text-shadow 1.4s ease-out;
+.neon.wait { filter: brightness(.45); }
+.neon .nw { white-space: nowrap; }
+.neon .ch { display: inline; animation: ch-on .9s ease-out both; }
+@keyframes ch-on {
+  0%   { opacity: .35; text-shadow: none; }
+  35%  { opacity: 1; color: #fff; text-shadow: 0 0 4px #fff, 0 0 14px rgba(255,255,255,.8), 0 0 30px rgba(190,232,255,.6); }
+  100% { opacity: 1; text-shadow: 0 0 3px rgba(255,255,255,.45), 0 0 12px rgba(255,255,255,.25), 0 0 30px rgba(190,232,255,.16); }
 }
-.neon.lit { animation: neon-sweep var(--sweep, 1.1s) cubic-bezier(.3, .6, .3, 1) forwards; }
-.neon.lit, .neon.lit-done {
-  text-shadow:
-    0 0 3px rgba(255, 255, 255, .45),
-    0 0 12px rgba(255, 255, 255, .25),
-    0 0 30px rgba(190, 232, 255, .16);
+.neon.lit-done {
+  text-shadow: 0 0 3px rgba(255,255,255,.45), 0 0 12px rgba(255,255,255,.25), 0 0 30px rgba(190,232,255,.16);
 }
-.neon.lit-done { -webkit-mask-image: none; mask-image: none; animation: neon-settle 1.6s ease-out; }
-@keyframes neon-sweep { to { --lit: 114%; } }
-/* короткий «підпал» неону після проходу смуги */
-@keyframes neon-settle {
-  0%   { text-shadow: 0 0 4px rgba(255,255,255,.7), 0 0 18px rgba(255,255,255,.45), 0 0 44px rgba(190,232,255,.3); }
-  100% { text-shadow: 0 0 3px rgba(255,255,255,.45), 0 0 12px rgba(255,255,255,.25), 0 0 30px rgba(190,232,255,.16); }
-}
-.lead.neon.lit, .lead.neon.lit-done, .hero__sub.neon.lit, .hero__sub.neon.lit-done {
-  text-shadow: 0 0 10px rgba(255, 255, 255, .22), 0 0 24px rgba(190, 232, 255, .1);
+.lead.neon.lit-done, .hero__sub.neon.lit-done { text-shadow: 0 0 10px rgba(255,255,255,.22), 0 0 24px rgba(190,232,255,.1); }
+.lead.neon .ch, .hero__sub.neon .ch { animation-name: ch-on-soft; }
+@keyframes ch-on-soft {
+  0%   { opacity: .35; text-shadow: none; }
+  35%  { opacity: 1; color: #fff; text-shadow: 0 0 8px rgba(255,255,255,.6), 0 0 20px rgba(190,232,255,.35); }
+  100% { opacity: 1; text-shadow: 0 0 10px rgba(255,255,255,.22), 0 0 24px rgba(190,232,255,.1); }
 }
 
-/* --- блакитна пульсуюча пляма за фото й відео --- */
+/* --- фото: без кутових рамок, повільна блакитна пульсація, яскравіше при наведенні --- */
 
-.frame__slot:has(> img, > video):not(.frame__slot--logo) { animation: blob 5.5s ease-in-out infinite; }
-.frame:nth-child(3n+2) .frame__slot { animation-delay: -1.8s; }
-.frame:nth-child(3n) .frame__slot { animation-delay: -3.6s; }
-@keyframes blob {
-  0%, 100% { box-shadow: 0 0 26px -4px rgba(47, 217, 255, .14), 0 18px 60px -20px rgba(47, 217, 255, .18); }
-  50%      { box-shadow: 0 0 42px 2px rgba(47, 217, 255, .30), 0 22px 90px -10px rgba(47, 217, 255, .30); }
+.frame::before, .frame::after { display: none; }
+
+@property --pulse { syntax: "<number>"; inherits: false; initial-value: 0; }
+@property --boost { syntax: "<number>"; inherits: false; initial-value: 1; }
+
+.frame__slot:has(> img, > video):not(.frame__slot--logo) {
+  --boost: 1;
+  box-shadow:
+    0 0 calc(26px + 14px * var(--pulse) * var(--boost)) calc(-4px + 5px * var(--pulse) + 4px * (var(--boost) - 1)) rgba(47, 217, 255, calc((.12 + .14 * var(--pulse)) * var(--boost))),
+    0 18px calc(60px + 26px * var(--pulse)) -16px rgba(47, 217, 255, calc((.15 + .12 * var(--pulse)) * var(--boost)));
+  animation: blob 6.6s ease-in-out infinite;
+  transition: --boost .6s ease, border-color .6s ease;
 }
+.frame:nth-child(3n+2) .frame__slot { animation-delay: -2.2s; }
+.frame:nth-child(3n) .frame__slot { animation-delay: -4.4s; }
+@keyframes blob { 0%, 100% { --pulse: 0; } 50% { --pulse: 1; } }
+
+.frame__slot img, .frame__slot video { transition: filter .6s ease, transform .8s var(--ease); }
+.frame:hover .frame__slot:has(> img, > video) { --boost: 2.2; border-color: rgba(47, 217, 255, .55); }
+.frame:hover .frame__slot img, .frame:hover .frame__slot video { filter: brightness(1.1) saturate(1.15); transform: scale(1.02); }
 
 @media (prefers-reduced-motion: reduce) {
-  .neon { -webkit-mask-image: none; mask-image: none; }
-  .neon.lit, .neon.lit-done { animation: none; }
-  .frame__slot:has(> img, > video) { animation: none; box-shadow: 0 0 30px rgba(47, 217, 255, .18); }
+  .neon.wait { filter: none; }
+  .neon .ch { animation: none; }
+  .frame__slot:has(> img, > video) { animation: none; }
+  .frame:hover .frame__slot img, .frame:hover .frame__slot video { transform: none; }
 }

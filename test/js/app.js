@@ -255,41 +255,69 @@
   form.addEventListener('input', function (e) { e.target.classList.remove('bad'); });
 
 
-  // --- білий неон: світлий текст спалахує рядок за рядком, коли доходить до нього прокручування ---
+  // --- білий неон: світлий текст спалахує по літерах, коли доходить до нього прокручування ---
 
   (function () {
     var targets = document.querySelectorAll(
       'main h1, main h2, main h3, main .lead, main .hero__sub, main .quote p'
     );
     if (!targets.length) return;
-    var light = function (el) {
-      // довші блоки світяться трохи довше, щоб рядки загорялися по черзі
-      var lines = Math.max(1, Math.round(el.offsetHeight / (parseFloat(getComputedStyle(el).lineHeight) || 24)));
-      el.style.setProperty('--sweep', Math.min(0.55 + lines * 0.35, 2.2).toFixed(2) + 's');
-      el.classList.add('lit');
-      var finished = false;
-      var finish = function () {
-        if (finished) return;
-        finished = true;
-        el.classList.remove('lit');
-        el.classList.add('lit-done');
-      };
-      el.addEventListener('animationend', function (e) { if (e.animationName === 'neon-sweep') finish(); });
-      setTimeout(finish, 2600); // запасний варіант для старих браузерів
-    };
     if (calm || !('IntersectionObserver' in window)) {
       targets.forEach(function (el) { el.classList.add('neon', 'lit-done'); });
       return;
     }
+
+    // розбиваємо текст на літери, не чіпаючи вкладених тегів (<b>, <a> тощо)
+    function split(el) {
+      var chars = [];
+      var walk = function (node) {
+        [].slice.call(node.childNodes).forEach(function (n) {
+          if (n.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            n.nodeValue.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var w = document.createElement('span');
+              w.className = 'nw';
+              Array.from(part).forEach(function (c) {
+                var s = document.createElement('span');
+                s.className = 'ch';
+                s.textContent = c;
+                w.appendChild(s);
+                chars.push(s);
+              });
+              frag.appendChild(w);
+            });
+            n.parentNode.replaceChild(frag, n);
+          } else if (n.nodeType === 1) walk(n);
+        });
+      };
+      walk(el);
+      return chars;
+    }
+
+    function light(el) {
+      var html = el.innerHTML;
+      var chars = split(el);
+      // літери йдуть одна за одною; довгий текст іде швидше, щоб не тягнулося
+      var step = Math.max(8, Math.min(55, 1500 / Math.max(chars.length, 1)));
+      chars.forEach(function (c, i) { c.style.animationDelay = Math.round(i * step) + 'ms'; });
+      el.classList.remove('wait');
+      setTimeout(function () {
+        // повертаємо звичайну розмітку (щоб працював перемикач мови) і лишаємо світіння
+        if (el.querySelector('.ch')) el.innerHTML = html;
+        el.classList.add('lit-done');
+      }, chars.length * step + 1000);
+    }
+
     var seen = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
         seen.unobserve(en.target);
-        // невелика пауза, щоб збігтися з появою блоку
-        setTimeout(function () { light(en.target); }, 180);
+        setTimeout(function () { light(en.target); }, 150);
       });
-    }, { rootMargin: '0px 0px -18% 0px', threshold: 0.2 });
-    targets.forEach(function (el) { el.classList.add('neon'); seen.observe(el); });
+    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.2 });
+    targets.forEach(function (el) { el.classList.add('neon', 'wait'); seen.observe(el); });
   })();
 
   // --- анімація успішної заявки: форма згортається, малюється зелена галочка ---
