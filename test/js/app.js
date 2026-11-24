@@ -148,6 +148,53 @@
     if (e.key === 'Escape') closeMenu();
   });
 
+  // --- свайп справа наліво відкриває меню, зліва направо закриває ---
+
+  var swipeTab = document.querySelector('.swipe-tab');
+  if (swipeTab) {
+    swipeTab.addEventListener('click', openMenu);
+    try {
+      if (!localStorage.getItem('fs-swipe-hint')) {
+        setTimeout(function () { swipeTab.classList.add('nudge'); }, 1800);
+        localStorage.setItem('fs-swipe-hint', '1');
+      }
+    } catch (e) {}
+  }
+
+  function scrollsSideways(el) {
+    for (; el && el !== document.body; el = el.parentElement) {
+      if (el.scrollWidth > el.clientWidth + 2) {
+        var ox = getComputedStyle(el).overflowX;
+        if (ox === 'auto' || ox === 'scroll') return true;
+      }
+    }
+    return false;
+  }
+
+  var sw = null;
+  document.addEventListener('touchstart', function (e) {
+    sw = null;
+    if (e.touches.length !== 1) return;
+    var t = e.target;
+    if (t.closest && t.closest('input, textarea, select, video, [data-noswipe]')) return;
+    var open = menu.classList.contains('is-open');
+    if (!open && scrollsSideways(t)) return;
+    sw = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now(), open: open };
+  }, { passive: true });
+
+  document.addEventListener('touchend', function (e) {
+    if (!sw) return;
+    var p = e.changedTouches[0];
+    var dx = p.clientX - sw.x, dy = p.clientY - sw.y;
+    var s = sw; sw = null;
+    if (Date.now() - s.t > 900) return;
+    if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
+    if (!s.open && dx < 0) openMenu();
+    else if (s.open && dx > 0) closeMenu();
+  }, { passive: true });
+
+  document.addEventListener('touchcancel', function () { sw = null; }, { passive: true });
+
   // --- поява блоків ---
 
   var io = 'IntersectionObserver' in window ? new IntersectionObserver(function (entries) {
