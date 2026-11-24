@@ -733,6 +733,7 @@ a.contact:hover { border-color: var(--led); }
 
 .rent-hero { margin: 8px 0 0; }
 .rent-hero .frame__slot { aspect-ratio: 21 / 9; }
+@media (max-width: 640px) { .rent-hero .frame__slot { aspect-ratio: 3 / 2; } }
 @media (max-width: 719px) { .rent-hero .frame__slot { aspect-ratio: 4 / 3; } }
 
 .signup textarea {
