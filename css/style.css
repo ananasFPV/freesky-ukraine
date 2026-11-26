@@ -529,6 +529,22 @@ a.card:hover::after { transform: scaleX(1); }
 .sponsor .frame__slot { aspect-ratio: 1; background-color: var(--bg); }
 .sponsor h2 { margin-bottom: .4em; }
 .sponsor p:last-child { margin: 0; color: #c3cbd8; }
+.sponsor p { color: #c3cbd8; }
+.more { margin-top: 10px; }
+.more summary {
+  display: inline-flex; align-items: center; gap: 8px; cursor: pointer; list-style: none;
+  font: 600 .78rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase;
+  color: var(--led); padding: 9px 14px; border: 1px solid rgba(47,217,255,.45); border-radius: 999px;
+  box-shadow: 0 0 14px rgba(47,217,255,.18) inset, 0 0 12px rgba(47,217,255,.12);
+  transition: box-shadow .25s ease, border-color .25s ease;
+}
+.more summary::-webkit-details-marker { display: none; }
+.more summary::after { content: ""; width: 7px; height: 7px; border: solid currentColor; border-width: 0 2px 2px 0; transform: translateY(-2px) rotate(45deg); transition: transform .3s var(--ease); }
+.more[open] summary::after { transform: translateY(2px) rotate(-135deg); }
+.more summary:hover, .more summary:focus-visible { border-color: var(--led); box-shadow: 0 0 18px rgba(47,217,255,.3) inset, 0 0 18px rgba(47,217,255,.3); outline: none; }
+.more__close, .more[open] .more__open { display: none; }
+.more[open] .more__close { display: inline; }
+.more p { margin: 14px 0 0; animation: drop .35s var(--ease); }
 .tagline { font: 500 12px var(--mono); color: var(--led-2); margin-bottom: 8px; }
 .card--join { border-style: dashed; margin-bottom: 24px; }
 .card--join .card__num { font-size: 22px; margin-bottom: 12px; }
