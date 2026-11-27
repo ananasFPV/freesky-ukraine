@@ -24,12 +24,13 @@
     document.querySelectorAll('main .btn--go, .footer').forEach(function (el) { ctaWatch.observe(el); });
   }
   var form = document.getElementById('signup');
+  var rentForm = document.getElementById('rent');
   var calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var heroTrack = document.querySelector('.hero__track');
   if (calm && heroTrack && heroTrack.pauseAnimations) heroTrack.pauseAnimations();
 
   var current = null;
-  var busy = false;
+  var busy = false, pending = null;
 
   // --- мова ---
 
@@ -56,6 +57,7 @@
     menuBtn.querySelector('.menu-btn__label').textContent =
       menu.classList.contains('is-open') ? ui('menuClose') : ui('menuOpen');
     form.querySelector('.signup__msg').textContent = '';
+    if (rentForm) rentForm.querySelector('.signup__msg').textContent = '';
     try { localStorage.setItem('fs-lang', lang); } catch (e) {}
   }
 
@@ -80,7 +82,8 @@
       if (target === name) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
-    onTrial = name === 'trial';
+    // на сторінках із власною формою нижня кнопка «на пробне» не потрібна
+    onTrial = name === 'trial' || name === 'rent';
     syncSticky();
     window.scrollTo(0, 0);
     current = name;
@@ -89,7 +92,8 @@
   }
 
   function go(name) {
-    if (name === current || busy) return;
+    if (name === current) return;
+    if (busy) { pending = name; return; }
     if (calm || current === null) { show(name); return; }
 
     busy = true;
@@ -98,8 +102,11 @@
     wipe.classList.add('run');
 
     // підміняємо вкладку, поки екран закритий смугами
-    setTimeout(function () { show(name); }, 380);
-    setTimeout(function () { wipe.classList.remove('run'); busy = false; }, 1000);
+    setTimeout(function () { show(name); }, 260);
+    setTimeout(function () {
+      wipe.classList.remove('run'); busy = false;
+      if (pending) { var p = pending; pending = null; go(p); }
+    }, 600);
   }
 
   window.addEventListener('hashchange', function () {
@@ -140,6 +147,53 @@
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeMenu();
   });
+
+  // --- свайп справа наліво відкриває меню, зліва направо закриває ---
+
+  var swipeTab = document.querySelector('.swipe-tab');
+  if (swipeTab) {
+    swipeTab.addEventListener('click', openMenu);
+    try {
+      if (!localStorage.getItem('fs-swipe-hint')) {
+        setTimeout(function () { swipeTab.classList.add('nudge'); }, 1800);
+        localStorage.setItem('fs-swipe-hint', '1');
+      }
+    } catch (e) {}
+  }
+
+  function scrollsSideways(el) {
+    for (; el && el !== document.body; el = el.parentElement) {
+      if (el.scrollWidth > el.clientWidth + 2) {
+        var ox = getComputedStyle(el).overflowX;
+        if (ox === 'auto' || ox === 'scroll') return true;
+      }
+    }
+    return false;
+  }
+
+  var sw = null;
+  document.addEventListener('touchstart', function (e) {
+    sw = null;
+    if (e.touches.length !== 1) return;
+    var t = e.target;
+    if (t.closest && t.closest('input, textarea, select, video, [data-noswipe]')) return;
+    var open = menu.classList.contains('is-open');
+    if (!open && scrollsSideways(t)) return;
+    sw = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now(), open: open };
+  }, { passive: true });
+
+  document.addEventListener('touchend', function (e) {
+    if (!sw) return;
+    var p = e.changedTouches[0];
+    var dx = p.clientX - sw.x, dy = p.clientY - sw.y;
+    var s = sw; sw = null;
+    if (Date.now() - s.t > 900) return;
+    if (Math.abs(dx) < 60 || Math.abs(dy) > Math.abs(dx) * 0.6) return;
+    if (!s.open && dx < 0) openMenu();
+    else if (s.open && dx > 0) closeMenu();
+  }, { passive: true });
+
+  document.addEventListener('touchcancel', function () { sw = null; }, { passive: true });
 
   // --- поява блоків ---
 
@@ -183,6 +237,42 @@
   // Заявка йде в Google-таблицю й Telegram через Apps Script.
   // Якщо скрипт не налаштований або не відповідає, пропонуємо WhatsApp.
 
+  // помилка біля поля: текстом, а не лише кольором рамки
+  function fieldError(f, text) {
+    var id = (f.form.id || 'f') + '-' + f.name + '-err';
+    var box = document.getElementById(id);
+    if (!text) {
+      f.classList.remove('bad'); f.removeAttribute('aria-invalid');
+      if (box) box.remove();
+      return;
+    }
+    f.classList.add('bad'); f.setAttribute('aria-invalid', 'true');
+    if (!box) {
+      box = document.createElement('span');
+      box.className = 'field-err'; box.id = id;
+      f.insertAdjacentElement('afterend', box);
+      f.setAttribute('aria-describedby', id);
+    }
+    box.textContent = text;
+  }
+  function checkField(f) {
+    var v = f.value.trim();
+    if (f.name === 'phone') return v.replace(/\D/g, '').length >= 9 ? '' : ui('errPhone');
+    if (!v) return ui(f.name === 'date' ? 'errDate' : 'errEmpty');
+    if (!f.checkValidity()) return ui(f.name === 'age' ? 'errAge' : f.name === 'pilots' ? 'errPilots' : 'errEmpty');
+    return '';
+  }
+  function validate(fields) {
+    var first = null;
+    fields.forEach(function (f) {
+      var err = checkField(f);
+      fieldError(f, err);
+      if (err && !first) first = f;
+    });
+    if (first) first.focus();
+    return !first;
+  }
+
   var msgEl = form.querySelector('.signup__msg');
   var sendBtn = form.querySelector('button[type="submit"]');
 
@@ -204,14 +294,7 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
-    var ok = true;
-    ['parent', 'phone', 'age'].forEach(function (n) {
-      var f = form.elements[n];
-      var bad = !f.value.trim() || !f.checkValidity() || (n === 'phone' && f.value.replace(/\D/g, '').length < 9);
-      f.classList.toggle('bad', bad);
-      if (bad && ok) { f.focus(); ok = false; }
-    });
-    if (!ok) return;
+    if (!validate(['parent', 'phone', 'age'].map(function (n) { return form.elements[n]; }))) return;
 
     if (!FORM_ENDPOINT) {
       window.open(waLink(), '_blank', 'noopener');
@@ -238,8 +321,9 @@
       .then(function (r) { return r.json(); })
       .then(function (res) {
         if (!res.ok) throw new Error(res.error || 'fail');
-        say(ui('formSent'), 'is-ok');
+        say('');
         form.reset();
+        celebrate(form, ui('doneTrial'));
       })
       .catch(function () {
         msgEl.className = 'signup__msg is-err';
@@ -248,7 +332,269 @@
       .then(function () { sendBtn.disabled = false; });
   });
 
-  form.addEventListener('input', function (e) { e.target.classList.remove('bad'); });
+  form.addEventListener('input', function (e) { if (e.target.classList.contains('bad')) fieldError(e.target, ''); });
+
+
+  // --- білий неон: світлий текст спалахує по літерах, коли доходить до нього прокручування ---
+
+  (function () {
+    // лише заголовки сторінок і розділів; абзаци, підписи й форми лишаються спокійними
+    var targets = [].slice.call(document.querySelectorAll('main h1, main h2')).filter(function (el) {
+      return !el.closest('form');
+    });
+    if (!targets.length) return;
+    if (calm || !('IntersectionObserver' in window)) {
+      targets.forEach(function (el) { el.classList.add('neon', 'lit-done'); });
+      return;
+    }
+
+    // розбиваємо текст на літери, не чіпаючи вкладених тегів (<b>, <a> тощо)
+    function split(el) {
+      var chars = [];
+      var walk = function (node) {
+        [].slice.call(node.childNodes).forEach(function (n) {
+          if (n.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            n.nodeValue.split(/(\s+)/).forEach(function (part) {
+              if (!part) return;
+              if (/^\s+$/.test(part)) { frag.appendChild(document.createTextNode(part)); return; }
+              var w = document.createElement('span');
+              w.className = 'nw';
+              Array.from(part).forEach(function (c) {
+                var s = document.createElement('span');
+                s.className = 'ch';
+                s.textContent = c;
+                w.appendChild(s);
+                chars.push(s);
+              });
+              frag.appendChild(w);
+            });
+            n.parentNode.replaceChild(frag, n);
+          } else if (n.nodeType === 1) walk(n);
+        });
+      };
+      walk(el);
+      return chars;
+    }
+
+    function light(el) {
+      var html = el.innerHTML;
+      var chars = split(el);
+      // літери йдуть одна за одною; довгий текст іде швидше, щоб не тягнулося
+      // увесь заголовок спалахує максимум за ~0,6 с
+      var step = Math.max(6, Math.min(40, 600 / Math.max(chars.length, 1)));
+      chars.forEach(function (c, i) { c.style.animationDelay = Math.round(i * step) + 'ms'; });
+      el.classList.add('lighting');
+      el.classList.remove('wait');
+      setTimeout(function () {
+        // повертаємо звичайну розмітку (щоб працював перемикач мови) і лишаємо світіння
+        if (el.querySelector('.ch')) el.innerHTML = html;
+        el.classList.add('lit-done');
+        el.classList.remove('lighting');
+      }, chars.length * step + 460);
+    }
+
+
+    var seen = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        seen.unobserve(en.target);
+        var el = en.target;
+        setTimeout(function () {
+          light(el);
+        }, 60);
+      });
+    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.2 });
+    targets.forEach(function (el) { el.classList.add('neon', 'wait'); seen.observe(el); });
+  })();
+
+  // --- світіння за фото: вмикаємо пульс лише для фото, які зараз на екрані ---
+
+  (function () {
+    var frames = [].slice.call(document.querySelectorAll('.frame')).filter(function (f) {
+      return f.querySelector('.frame__slot > img, .frame__slot > video') && !f.querySelector('.frame__slot--logo');
+    });
+    frames.forEach(function (f) { f.classList.add('glow'); });
+    if (!('IntersectionObserver' in window)) { frames.forEach(function (f) { f.classList.add('vis'); }); return; }
+    var io2 = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { en.target.classList.toggle('vis', en.isIntersecting); });
+    }, { rootMargin: '80px 0px' });
+    frames.forEach(function (f) { io2.observe(f); });
+  })();
+
+  // --- головний екран: дрони й траса ---
+  // На телефоні прибираємо SVG-розмиття (воно найважче для графіки), а коли екран
+  // не видно — ставимо анімацію на паузу, щоб не забирала ресурси у відео й прокрутки.
+  if (heroTrack) {
+    if (window.matchMedia('(max-width: 719px), (pointer: coarse)').matches) {
+      heroTrack.querySelectorAll('[filter]').forEach(function (n) { n.removeAttribute('filter'); });
+      heroTrack.classList.add('lite');
+    }
+    if (!calm && heroTrack.pauseAnimations && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) heroTrack.unpauseAnimations(); else heroTrack.pauseAnimations();
+      }).observe(heroTrack);
+    }
+  }
+
+  // --- анімація успішної заявки: форма згортається, малюється зелена галочка ---
+
+  function celebrate(f, text) {
+    var startH = f.offsetHeight;
+    var done = document.createElement('div');
+    done.className = 'done';
+    done.setAttribute('role', 'status');
+    done.innerHTML =
+      '<svg class="done__check" viewBox="0 0 52 52" aria-hidden="true">' +
+        '<circle class="done__ring" cx="26" cy="26" r="24"/>' +
+        '<path class="done__tick" d="M15 27 l7 7 l15 -16"/>' +
+      '</svg>' +
+      '<h2></h2><p></p>' +
+      '<button type="button" class="btn btn--line done__again"></button>';
+    done.querySelector('h2').textContent = ui('doneTitle');
+    done.querySelector('p').textContent = text;
+    done.querySelector('button').textContent = ui('doneAgain');
+
+    done.querySelector('button').addEventListener('click', function () {
+      f.classList.remove('is-done', 'is-folding');
+      f.style.height = '';
+      done.remove();
+      var first = f.querySelector('input:not(.hp)');
+      if (first) first.focus();
+    });
+
+    var finish = function () {
+      f.classList.add('is-done');
+      f.classList.remove('is-folding');
+      f.appendChild(done);
+      if (calm) { f.style.height = ''; return; }
+      f.style.height = 'auto';
+      var endH = f.offsetHeight;
+      f.style.height = startH + 'px';
+      void f.offsetHeight;
+      f.style.height = endH + 'px';
+      setTimeout(function () { f.style.height = ''; }, 650);
+      var top = f.getBoundingClientRect().top;
+      if (top < 70 || top > window.innerHeight * 0.6) {
+        window.scrollTo({ top: window.scrollY + top - 90, behavior: 'smooth' });
+      }
+    };
+
+    if (calm) { finish(); return; }
+    f.style.height = startH + 'px';
+    f.classList.add('is-folding');
+    setTimeout(finish, 420);
+  }
+
+  // --- заявка на оренду траси ---
+  // Іде тим самим шляхом, що й запис на пробне (Apps Script → таблиця + Telegram),
+  // з позначкою type=rental. Поля parent/city/age/mil заповнені так, щоб і стара
+  // версія скрипта, яка ще не знає про оренду, надіслала зрозуміле повідомлення.
+
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-scroll]');
+    if (!b) return;
+    var t = document.getElementById(b.dataset.scroll);
+    if (t) {
+      t.scrollIntoView({ behavior: calm ? 'auto' : 'smooth', block: 'start' });
+      var first = t.querySelector('input:not(.hp)');
+      if (first) setTimeout(function () { first.focus({ preventScroll: true }); }, calm ? 0 : 600);
+    }
+  });
+
+  if (rentForm) {
+    var rMsg = rentForm.querySelector('.signup__msg');
+    var rBtn = rentForm.querySelector('button[type="submit"]');
+    var rf = rentForm.elements;
+    var today = new Date();
+    rf.date.min = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+
+    var rSay = function (text, cls) {
+      rMsg.textContent = text;
+      rMsg.className = 'signup__msg' + (cls ? ' ' + cls : '');
+    };
+    var niceDate = function (v) { // 2026-11-20 → 20.11.2026
+      var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v || '');
+      return m ? m[3] + '.' + m[2] + '.' + m[1] : (v || '');
+    };
+    var radio = function (n) { var el = rentForm.querySelector('input[name="' + n + '"]:checked'); return el ? el.value : ''; };
+    var rentData = function (d) {
+      return {
+        name: rf.name.value.trim(), phone: rf.phone.value.trim(),
+        date: niceDate(rf.date.value), time: radio('slot'), hours: '1',
+        pilots: rf.pilots.value, city: d.city.kyiv, gear: d.gear[radio('gear')], // оренда лише в Києві
+        note: rf.note.value.trim()
+      };
+    };
+    var rentWa = function () {
+      var m = ui('rentMsg'), d = rentData(dict.ui[lang]);
+      var vals = [d.name, d.phone, d.date, d.time, d.hours, d.pilots, d.city, d.gear, d.note];
+      var text = m[0];
+      vals.forEach(function (v, i) { if (v) text += '\n' + m[i + 1] + ': ' + v; });
+      return 'https://wa.me/380672392503?text=' + encodeURIComponent(text);
+    };
+
+    rentForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (!validate(['name', 'phone', 'date', 'pilots'].map(function (n) { return rf[n]; }))) return;
+
+      if (!rf.agree.checked) {
+        rf.agree.focus();
+        rSay(ui('agreeFirst'), 'is-err');
+        return;
+      }
+
+      // оренда лише у вихідні
+      var day = new Date(rf.date.value + 'T12:00:00').getDay();
+      if (day !== 0 && day !== 6) {
+        fieldError(rf.date, ui('weekendOnly')); rf.date.focus();
+        return;
+      }
+
+      if (!FORM_ENDPOINT) {
+        window.open(rentWa(), '_blank', 'noopener');
+        rSay(ui('formThanks'));
+        return;
+      }
+
+      var d = rentData(dict.ui.uk);
+      var summary = d.date + ' ' + d.time + ', ' + d.hours + ' год, ' + d.pilots + ' пілот.';
+      var body = new URLSearchParams({
+        type: 'rental',
+        // у скрипті поле часу коротке, тому шлемо початок години (12:00)
+        name: d.name, phone: d.phone, date: d.date, time: d.time.slice(0, 5), hours: d.hours,
+        pilots: d.pilots, city: d.city, gear: d.gear, note: d.note,
+        // для старої версії скрипта
+        parent: ('ОРЕНДА ТРАСИ · ' + d.name + ' · ' + summary).slice(0, 80),
+        age: '—', mil: '—',
+        lang: lang,
+        website: rf.website.value
+      });
+
+      rBtn.disabled = true;
+      rSay(ui('formSending'));
+
+      fetch(FORM_ENDPOINT, { method: 'POST', body: body })
+        .then(function (r) { return r.json(); })
+        .then(function (res) {
+          if (!res.ok) throw new Error(res.error || 'fail');
+          rSay('');
+          rentForm.reset();
+          celebrate(rentForm, ui('doneRent'));
+        })
+        .catch(function () {
+          rMsg.className = 'signup__msg is-err';
+          rMsg.innerHTML = ui('formFail') + ' <a href="' + rentWa() + '" target="_blank" rel="noopener">WhatsApp</a>';
+        })
+        .then(function () { rBtn.disabled = false; });
+    });
+
+    rentForm.addEventListener('input', function (e) { if (e.target.classList.contains('bad') && e.target !== rf.date) fieldError(e.target, ''); });
+    rf.date.addEventListener('change', function () {
+      var day = new Date(rf.date.value + 'T12:00:00').getDay();
+      fieldError(rf.date, rf.date.value && day !== 0 && day !== 6 ? ui('weekendOnly') : '');
+    });
+  }
 
   // відео без звуку: грають лише коли їх видно на екрані
   var clips = [].slice.call(document.querySelectorAll('.frame__slot video'));
@@ -289,6 +635,89 @@
       new IntersectionObserver(function (en) { tickerRun(en[0].isIntersecting); }).observe(tickerTrack.parentNode);
     } else tickerRun(true);
   }
+
+  // верхня панель: суцільне тло, щойно сторінка зрушила, щоб текст не ліз під логотип
+  var topbar = document.querySelector('.topbar'), tbTick = false;
+  var syncTop = function () { tbTick = false; topbar.classList.toggle('scrolled', window.scrollY > 8); };
+  window.addEventListener('scroll', function () { if (!tbTick) { tbTick = true; requestAnimationFrame(syncTop); } }, { passive: true });
+  syncTop();
+
+  // --- «Що всередині дрона»: 60 кадрів, відрендерених у Blender ---
+  // Кадри вантажимо лише коли секція близько; на телефоні — менші (480 px).
+  // Під час прокручування просто малюємо потрібний кадр у canvas: це дешево для телефону.
+  (function () {
+    var sec = document.querySelector('.xray');
+    if (!sec) return;
+    var N = 60;
+    var canvas = sec.querySelector('.xray__canvas'), ctx = canvas.getContext('2d');
+    var bar = sec.querySelector('.xray__bar');
+    var parts = [].slice.call(sec.querySelectorAll('.xray__parts li'));
+    var small = Math.min(window.innerWidth, window.innerHeight) * (window.devicePixelRatio || 1) < 900;
+    var dir = 'img/drone/' + (small ? 'm' : 'd') + '/';
+    var size = small ? 480 : 720;
+    canvas.width = canvas.height = size;
+    var imgs = [], loaded = 0, started = false, shown = -1, tick = false;
+
+    function progress() {
+      var r = sec.getBoundingClientRect();
+      var span = sec.offsetHeight - window.innerHeight;
+      return span > 0 ? Math.min(1, Math.max(0, -r.top / span)) : 0;
+    }
+    function nearest(i) { // якщо кадр ще не завантажився, беремо найближчий готовий
+      for (var d = 0; d < N; d++) {
+        if (imgs[i - d] && imgs[i - d]._ok) return imgs[i - d];
+        if (imgs[i + d] && imgs[i + d]._ok) return imgs[i + d];
+      }
+      return null;
+    }
+    function draw() {
+      tick = false;
+      var p = progress();
+      var i = Math.round(p * (N - 1));
+      var im = nearest(i);
+      if (im && (i !== shown || !im._drawn)) {
+        ctx.clearRect(0, 0, size, size);
+        ctx.drawImage(im, 0, 0, size, size);
+        shown = i; im._drawn = true;
+        if (!sec.classList.contains('ready')) sec.classList.add('ready');
+      }
+      bar.style.setProperty('--p', p.toFixed(3));
+      var active = -1;
+      parts.forEach(function (li, k) { if (p >= parseFloat(li.dataset.at) - .06) active = k; });
+      if (p < .14) active = -1;
+      parts.forEach(function (li, k) { li.classList.toggle('on', k === active || calm); });
+    }
+    function ask() { if (!tick) { tick = true; requestAnimationFrame(draw); } }
+
+    function load() {
+      if (started) return; started = true;
+      // спершу кожен шостий кадр, щоб швидко була «груба» анімація, потім решта
+      var order = [];
+      for (var i = 0; i < N; i += 6) order.push(i);
+      for (var j = 0; j < N; j++) if (order.indexOf(j) < 0) order.push(j);
+      var next = 0;
+      function one() {
+        if (next >= order.length) return;
+        var k = order[next++];
+        var im = new Image();
+        im.decoding = 'async';
+        im.onload = function () { im._ok = true; loaded++; ask(); one(); };
+        im.onerror = function () { one(); };
+        im.src = dir + 'f' + ('00' + k).slice(-3) + '.webp';
+        imgs[k] = im;
+      }
+      one(); one(); one();
+    }
+
+    if (calm) { parts.forEach(function (li) { li.classList.add('on'); }); }
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) {
+        if (en[0].isIntersecting) load();
+      }, { rootMargin: '600px 0px' }).observe(sec);
+    } else load();
+    window.addEventListener('scroll', ask, { passive: true });
+    window.addEventListener('resize', ask);
+  })();
 
   document.getElementById('year').textContent = new Date().getFullYear();
 

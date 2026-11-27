@@ -8,18 +8,46 @@
   <meta name="theme-color" content="#07090f">
   <meta property="og:title" content="Free Sky Ukraine — більше, ніж школа дронів">
   <meta property="og:description" content="FPV-пілотування і 3D-друк для дітей 6–17 років. Перше заняття безкоштовне.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="uk_UA">
+  <meta property="og:site_name" content="Free Sky Ukraine">
   <meta property="og:url" content="https://freeskyukraine.com/">
-  <link rel="icon" href="img/logo.svg" type="image/svg+xml">
+  <link rel="canonical" href="https://freeskyukraine.com/">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Free Sky Ukraine",
+    "description": "Школа FPV-дронів і STEM для дітей 6–17 років.",
+    "url": "https://freeskyukraine.com/",
+    "foundingDate": "2022",
+    "areaServed": ["Київ", "Вінниця"],
+    "telephone": "+380672392503",
+    "email": "freeskyukraine@outlook.com",
+    "sameAs": [
+      "https://www.instagram.com/freeskyukraine/",
+      "https://www.facebook.com/FreeSkyUkraine/",
+      "https://t.me/FreeSkyUkraine",
+      "https://www.tiktok.com/@freeskyukraine",
+      "https://www.youtube.com/@FreeSkyUkraine"
+    ]
+  }
+  </script>
+  <link rel="icon" href="img/brand/favicon.ico" sizes="48x48">
+  <link rel="icon" href="img/brand/favicon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="img/brand/apple-touch-icon.png">
+  <link rel="manifest" href="img/brand/site.webmanifest">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Unbounded:wght@500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css?v=202611131015">
+  <link rel="stylesheet" href="css/style.css?v=202611270400">
 </head>
 <body>
+<a class="skip" href="#app" data-i18n="skip">Перейти до змісту</a>
 
 <header class="topbar">
   <a class="logo" href="#/" aria-label="Free Sky Ukraine">
-    <img src="img/logo.svg" alt="" width="34" height="34">
+    <img src="img/logo.svg?v=fs2" alt="" width="52" height="34">
     <span>Free Sky<b>Ukraine</b></span>
   </a>
   <a class="topbar__cta" href="#/trial" data-i18n="cta.short">Пробне заняття</a>
@@ -36,16 +64,16 @@
 <nav class="menu" id="menu" hidden>
   <div class="menu__track" aria-hidden="true"></div>
   <ol class="menu__list">
-    <li><a href="#/"><small>01</small><span data-i18n="nav.home">Головна</span></a></li>
-    <li><a href="#/about"><small>02</small><span data-i18n="nav.about">Про школу</span></a></li>
-    <li><a href="#/courses"><small>03</small><span data-i18n="nav.courses">Напрями</span></a></li>
-    <li><a href="#/trial"><small>04</small><span data-i18n="nav.trial">Пробне, розклад і ціни</span></a></li>
-    <li><a href="#/races"><small>05</small><span data-i18n="nav.races">Змагання</span></a></li>
-    <li><a href="#/team"><small>06</small><span data-i18n="nav.team">Команда</span></a></li>
-    <li><a href="#/faq"><small>07</small><span data-i18n="nav.faq">Питання батьків</span></a></li>
-    <li><a href="#/partners"><small>08</small><span data-i18n="nav.partners">Партнерам</span></a></li>
-    <li><a href="#/contacts"><small>09</small><span data-i18n="nav.contacts">Контакти</span></a></li>
-    <li><a href="#/sponsors"><small>10</small><span data-i18n="nav.sponsors">Наші спонсори та партнери</span></a></li>
+    <li><a href="#/"><span data-i18n="nav.home">Головна</span></a></li>
+    <li><a href="#/about"><span data-i18n="nav.about">Про школу</span></a></li>
+    <li><a href="#/courses"><span data-i18n="nav.courses">Напрями</span></a></li>
+    <li><a href="#/trial"><span data-i18n="nav.trial">Пробне, розклад і ціни</span></a></li>
+    <li><a href="#/races"><span data-i18n="nav.races">Змагання</span></a></li>
+    <li><a href="#/team"><span data-i18n="nav.team">Команда</span></a></li>
+    <li><a href="#/faq"><span data-i18n="nav.faq">Питання батьків</span></a></li>
+    <li><a href="#/partners"><span data-i18n="nav.partners">Партнерам</span></a></li>
+    <li><a href="#/contacts"><span data-i18n="nav.contacts">Контакти</span></a></li>
+    <li><a href="#/sponsors"><span data-i18n="nav.sponsors">Наші спонсори та партнери</span></a></li>
   </ol>
   <div class="menu__foot">
     <a href="https://wa.me/380672392503" target="_blank" rel="noopener">WhatsApp</a>
@@ -54,6 +82,8 @@
     <a href="https://wa.me/380672392503" target="_blank" rel="noopener">+380 67 239 2503</a>
   </div>
 </nav>
+
+<button class="swipe-tab" type="button" tabindex="-1" aria-hidden="true"></button>
 
 <div class="wipe" aria-hidden="true"><i></i><i></i><i></i></div>
 
@@ -122,8 +152,8 @@
       </svg>
 
       <div class="hero__inner">
-        <p class="kicker" data-i18n="slogan">Більше, ніж школа дронів</p>
         <h1 data-i18n="hero.title">Школа FPV-дронів і STEM для дітей <span class="nowrap">6–17 років</span></h1>
+        <p class="hero__slogan" data-i18n="slogan">Більше, ніж школа дронів</p>
         <p class="hero__sub" data-i18n="hero.sub">Від симулятора до справжніх польотів. У кожної дитини — свій план. Київ і Вінниця.</p>
         <a class="btn btn--go" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
 
@@ -136,7 +166,7 @@
       </div>
     </div>
 
-    <div class="ticker" role="marquee" aria-label="Вчись, досліджуй, перемагай">
+    <div class="ticker" aria-hidden="true">
       <div class="ticker__track">
         <div class="ticker__group">
           <span data-i18n="tick.w1">Вчись</span><i></i>
@@ -171,19 +201,37 @@
         </figure>
       </div>
 
+      <section class="xray" aria-labelledby="xray-t">
+        <div class="xray__pin">
+          <div class="xray__head">
+            <h2 id="xray-t" data-i18n="an.t">Що всередині дрона</h2>
+            <p class="xray__hint" data-i18n="an.hint">Прокручуйте — дрон розбереться на деталі</p>
+          </div>
+          <div class="xray__stage">
+            <canvas class="xray__canvas" width="720" height="720" aria-hidden="true"></canvas>
+            <img class="xray__poster" src="img/drone/m/f000.webp" alt="Мікродрон FPV, який розбирається на деталі" width="480" height="480" loading="lazy">
+            <div class="xray__bar" aria-hidden="true"><i></i></div>
+          </div>
+          <ol class="xray__parts">
+            <li data-at="0.28"><b data-i18n="an.props.t">Пропелери й мотори</b><span data-i18n="an.props">Чотири мотори тримають дрон у повітрі. Перед кожним польотом перевіряємо пропелери.</span></li>
+            <li data-at="0.42"><b data-i18n="an.cam.t">FPV-камера</b><span data-i18n="an.cam">Картинка з камери йде в окуляри пілота: дитина бачить трасу очима дрона.</span></li>
+            <li data-at="0.56"><b data-i18n="an.fc.t">Політний контролер</b><span data-i18n="an.fc">«Мозок» дрона. Як він влаштований, розбираємо на технічних лекціях.</span></li>
+            <li data-at="0.70"><b data-i18n="an.frame.t">Рама з LED-захистом</b><span data-i18n="an.frame">Легка, із захистом пропелерів. Рами й деталі учні проєктують і друкують на 3D-принтерах.</span></li>
+            <li data-at="0.84"><b data-i18n="an.bat.t">Акумулятор</b><span data-i18n="an.bat">Вчимо поводитися з акумуляторами безпечно й перевіряти їх перед стартом.</span></li>
+          </ol>
+        </div>
+      </section>
+
       <div class="cards cards--3">
         <a class="card rv" href="#/courses">
-          <span class="card__num">03</span>
           <h3 data-i18n="nav.courses">Напрями</h3>
           <p data-i18n="home.c1">FPV-пілотування, 3D-друк і технічні лекції.</p>
         </a>
         <a class="card rv" href="#/trial">
-          <span class="card__num">04</span>
           <h3 data-i18n="home.c2.t">Як проходить пробне</h3>
           <p data-i18n="home.c2">50 хвилин, безкоштовно, без досвіду. Техніку даємо ми.</p>
         </a>
         <a class="card rv" href="#/races">
-          <span class="card__num">05</span>
           <h3>Micro Drone Games</h3>
           <p data-i18n="home.c3">Щомісячні змагання на трасі з LED-воротами й табло часу.</p>
         </a>
@@ -193,6 +241,17 @@
         <p data-i18n="quote">Моє завдання — не обрати за дитину професію. Моє завдання — відчинити їй двері.</p>
         <cite data-i18n="quote.by">Сергій Ткачук, директор школи</cite>
       </blockquote>
+
+      <aside class="finale rv">
+        <div class="finale__text">
+          <h2 data-i18n="trial.title">Перше заняття — безкоштовно</h2>
+          <p data-i18n="home.c2">50 хвилин, безкоштовно, без досвіду. Техніку даємо ми.</p>
+        </div>
+        <div class="finale__act">
+          <a class="btn btn--go" href="#/trial" data-i18n="cta.long">Записатися на безкоштовне пробне</a>
+          <p class="signup__alt"><span data-i18n="f.alt">Або одразу в WhatsApp:</span> <a href="https://wa.me/380672392503" target="_blank" rel="noopener">+380 67 239 2503</a></p>
+        </div>
+      </aside>
     </div>
   </section>
 
@@ -200,7 +259,6 @@
   <section class="view" data-view="about" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.about">02 / Про школу</p>
         <h1 data-i18n="about.title">FPV-школа дронів і STEM-освітній хаб</h1>
         <p class="lead" data-i18n="about.lead">Free Sky Ukraine працює з 2022 року в Києві, а філіал Free Sky Win — у Вінниці.</p>
       </header>
@@ -259,7 +317,6 @@
   <section class="view" data-view="courses" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.courses">03 / Напрями</p>
         <h1 data-i18n="courses.title">Що вивчають у школі</h1>
       </header>
 
@@ -297,11 +354,12 @@
   <section class="view" data-view="trial" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.trial">04 / Пробне заняття</p>
         <h1 data-i18n="trial.title">Перше заняття — безкоштовно</h1>
         <p class="lead" data-i18n="trial.lead">Триває 50 хвилин. Досвід не потрібен, уся техніка наша.</p>
+        <button class="btn btn--go" type="button" data-scroll="signup" data-i18n="f.t">Запис на пробне</button>
       </header>
 
+      <h2 class="vh" data-i18n="home.c2.t">Як проходить пробне</h2>
       <ol class="laps rv">
         <li><span data-i18n="lap1">Коло 1</span><h3 data-i18n="l1.t">Знайомство з технікою</h3><p data-i18n="l1">Пульт, дрон, FPV-окуляри.</p></li>
         <li><span data-i18n="lap2">Коло 2</span><h3 data-i18n="l2.t">Симулятор</h3><p data-i18n="l2">Перші вправи, перші падіння (це нормально) і перше вдале коло.</p></li>
@@ -366,11 +424,10 @@
     </div>
   </section>
 
-  <!-- 05 Змагання -->
+  <!-- 06 Змагання -->
   <section class="view" data-view="races" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.races">05 / Змагання</p>
         <h1>Micro Drone Games</h1>
         <p class="lead" data-i18n="races.lead">«Ігри мікродронів» — внутрішні змагання раз на місяць і дитячі турніри з дрон-рейсингу.</p>
       </header>
@@ -420,7 +477,6 @@
   <section class="view" data-view="team" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.team">06 / Команда</p>
         <h1 data-i18n="team.title">Наші інструктори</h1>
       </header>
 
@@ -473,13 +529,12 @@
   <section class="view" data-view="faq" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.faq">07 / Питання батьків</p>
         <h1 data-i18n="faq.title">Коротко про головне</h1>
       </header>
 
       <div class="faq">
         <details class="rv"><summary data-i18n="q1">Скільки коштує?</summary><p data-i18n="a1">Абонемент у Києві — 4000 грн за 4 заняття на місяць. Ціну у Вінниці уточнюйте в WhatsApp. Перше заняття безкоштовне. 3D-друк зараз безкоштовний.</p></details>
-        <details class="rv"><summary data-i18n="q2">Як часто заняття?</summary><p data-i18n="a2">Двічі на тиждень (у Києві — вівторок і четвер), по 50 хвилин.</p></details>
+        <details class="rv"><summary data-i18n="q2">Як часто заняття?</summary><p data-i18n="a2">Заняття тривають 50 хвилин. У Києві групи займаються у вівторок і четвер, абонемент — 4 заняття на місяць. Зручний день підберемо під час запису.</p></details>
         <details class="rv"><summary data-i18n="q3">Де ви знаходитесь?</summary><p data-i18n="a3">У Києві та у Вінниці. Точну адресу залу ми надсилаємо під час запису на заняття.</p></details>
         <details class="rv"><summary data-i18n="q4">З якого віку можна? Чи це безпечно?</summary><p data-i18n="a4">З 6 років. Спочатку симулятор, потім легкі мікродрони під наглядом інструктора, у захищеній зоні.</p></details>
         <details class="rv"><summary data-i18n="q5">Чи треба купувати свій дрон?</summary><p data-i18n="a5">Ні, уся техніка наша: симулятори, пульти, мікродрони, FPV-окуляри.</p></details>
@@ -498,7 +553,6 @@
   <section class="view" data-view="partners" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.partners">08 / Партнерам і спонсорам</p>
         <h1 data-i18n="partners.title">Давайте розвивати юних інженерів і пілотів разом</h1>
         <p class="lead" data-i18n="partners.lead">Ми відкриті до співпраці з виробниками й магазинами техніки, які хочуть, щоб діти вчилися на хорошому обладнанні. Техніка по бартеру, знижки для учнів, призи для змагань — обговоримо формат, зручний для вас.</p>
       </header>
@@ -539,7 +593,6 @@
   <section class="view" data-view="contacts" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.contacts">09 / Контакти</p>
         <h1 data-i18n="contacts.title">Запис і питання</h1>
       </header>
 
@@ -581,7 +634,6 @@
   <section class="view" data-view="sponsors" hidden>
     <div class="wrap">
       <header class="page-head">
-        <p class="kicker" data-i18n="k.sponsors">10 / Наші спонсори та партнери</p>
         <h1 data-i18n="sp.title">Дякуємо тим, хто літає разом з нами</h1>
         <p class="lead" data-i18n="sp.lead">Завдяки нашим партнерам більше дітей можуть безкоштовно вчитися технологіям, тренуватися на хорошій техніці й виступати на змаганнях.</p>
       </header>
@@ -638,7 +690,7 @@
   <p><a href="#/sponsors" data-i18n="nav.sponsors">Наші спонсори та партнери</a> · <a href="#/partners" data-i18n="nav.partners">Партнерам</a> · <a href="#/contacts" data-i18n="nav.contacts">Контакти</a></p>
 </footer>
 
-<script src="js/i18n.js?v=202611131015"></script>
-<script src="js/app.js?v=202611131015"></script>
+<script src="js/i18n.js?v=202611270400"></script>
+<script src="js/app.js?v=202611270400"></script>
 </body>
 </html>
