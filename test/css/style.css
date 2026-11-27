@@ -81,6 +81,12 @@ p { margin: 0 0 1em; }
 @media (min-width: 720px) {
   .topbar__cta { display: inline-block; }
 }
+@media (max-width: 419px) {
+  .topbar .logo { gap: 6px; }
+  .topbar .logo img { width: 38px; height: 25px; }
+  .topbar .logo span { font-size: 11px; }
+  .topbar .logo b { font-size: 10px; letter-spacing: .1em; }
+}
 @media (max-width: 340px) {
   .logo span { display: none; }
 }
@@ -611,7 +617,7 @@ a.contact:hover { border-color: var(--led); }
 @media (max-width: 719px) {
   .topbar { gap: 8px; height: 60px; }
   .logo { gap: 8px; }
-  .logo svg, .logo img { width: 30px; height: 30px; }
+  .logo svg, .logo img { width: 46px; height: 30px; }
   .logo span { font-size: 12px; }
   .logo b { font-size: 11px; letter-spacing: .12em; }
   .lang button { padding: 0 8px; min-width: 36px; min-height: 36px; }

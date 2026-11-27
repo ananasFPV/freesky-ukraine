@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="Free Sky Ukraine">
+<title>Free Sky Ukraine</title>
+<rect x="0" y="0" width="1024" height="1024" rx="0" fill="#07090f"/>
+<g transform="translate(512 512) scale(1.05) translate(-513 -375)"><defs>
+  <filter id="avg" x="-20%" y="-50%" width="140%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+  <radialGradient id="avh"><stop offset="0" stop-color="#ffc94d" stop-opacity=".55"/><stop offset="1" stop-color="#ffc94d" stop-opacity="0"/></radialGradient>
+</defs>
+<path d="M304 408 C250 420 200 448 186 478 C176 502 205 517 262 519" fill="none" stroke="#e9b949" stroke-width="2.6" stroke-linecap="round" opacity=".8"/>
+<path d="M630 163 L367 249 L233 587 L298 587 L416 296 L584 238 Z" fill="#ffffff"/><path d="M790 164 L837 164 L815 220 L693 263 L660 345 L735 442 L697 538 L557 587 L492 587 L519 536 L651 489 L665 452 L591 355 L646 215 Z" fill="#ffffff"/><path d="M550 294 L443 329 L417 393 L526 356 Z" fill="#2fd9ff"/>
+<ellipse cx="640" cy="404" rx="70" ry="34" fill="url(#avh)"/><ellipse cx="292" cy="517" rx="48" ry="22" fill="url(#avh)"/><circle cx="838" cy="345" r="30.0" fill="url(#avh)"/>
+<path d="M262 519 C330 516 420 490 520 452 S700 375 838 345" fill="none" stroke="#ffc94d" stroke-width="15" stroke-linecap="round" opacity=".55" filter="url(#avg)"/>
+<path d="M262 519 C330 516 420 490 520 452 S700 375 838 345" fill="none" stroke="#e9b949" stroke-width="5" stroke-linecap="round"/>
+<circle cx="838" cy="345" r="13.5" fill="#ffc94d" opacity=".7" filter="url(#avg)"/><circle cx="838" cy="345" r="7.5" fill="#fff6c8"/></g>
+</svg>
