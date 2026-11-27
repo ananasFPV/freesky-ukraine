@@ -953,6 +953,21 @@ input, textarea { caret-color: var(--go); }
   .xray__parts li { position: static; opacity: 1; transform: none; }
 }
 
+/* --- після відправки заявки: дрон з Blender пролітає через екран --- */
+.flyby {
+  position: fixed; left: 0; z-index: 45; width: 132px; height: 132px; pointer-events: none;
+  background: url(../img/drone/hover.webp) 0 0 / 2112px 132px no-repeat;
+  animation: fly-sprite .42s steps(16) infinite, fly-path 2.6s cubic-bezier(.45, 0, .25, 1) both;
+  will-change: transform;
+}
+@keyframes fly-sprite { to { background-position-x: -2112px; } }
+@keyframes fly-path {
+  0%   { transform: translate(-160px, 60px) rotate(8deg); }
+  38%  { transform: translate(calc(50vw - 66px), 0) rotate(-4deg); }
+  55%  { transform: translate(calc(50vw - 66px), -10px) rotate(0); }
+  100% { transform: translate(calc(100vw + 40px), -70vh) rotate(-14deg); }
+}
+@media (prefers-reduced-motion: reduce) { .flyby { display: none; } }
 @media (max-width: 899px) { .xray__pin { padding-bottom: 92px; } }
 
 /* --- помітніша кнопка меню (розділи) --- */

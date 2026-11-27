@@ -439,6 +439,16 @@
 
   // --- анімація успішної заявки: форма згортається, малюється зелена галочка ---
 
+  // дрон з Blender підлітає до форми й «відвозить» заявку вгору
+  function flyby(f) {
+    var d = document.createElement('div');
+    d.className = 'flyby'; d.setAttribute('aria-hidden', 'true');
+    var r = f.getBoundingClientRect();
+    d.style.top = Math.max(70, Math.min(window.innerHeight - 160, r.top + r.height * .25)) + 'px';
+    document.body.appendChild(d);
+    setTimeout(function () { d.remove(); }, 2700);
+  }
+
   function celebrate(f, text) {
     var startH = f.offsetHeight;
     var done = document.createElement('div');
@@ -481,6 +491,7 @@
     };
 
     if (calm) { finish(); return; }
+    flyby(f);
     f.style.height = startH + 'px';
     f.classList.add('is-folding');
     setTimeout(finish, 420);
